@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchField.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
+      var input = document.getElementById('searchField');
+      var inputValue = input.value;
+      localStorage.setItem('searchField', inputValue);
       launchWebsite();
     }
   });
