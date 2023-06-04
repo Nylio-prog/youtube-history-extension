@@ -1,4 +1,14 @@
-let extensionActive = false;
+let extension_enabled;
+
+chrome.storage.local.get({extension_enabled: 0}, function (result) {
+
+    if (result == 0) {
+        extension_enabled = false;
+    }
+    else {
+        extension_enabled = true;
+    }
+});
 
 chrome.runtime.onMessage.addListener(function (message) {
   if (message.activateExtension) {
