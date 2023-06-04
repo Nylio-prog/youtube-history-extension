@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     else {
       toggleButton.classList.add("active");
     }
-});
+  });
 
   toggleButton.addEventListener("change", function () {
     chrome.storage.local.get({extension_enabled: 0}, function (result) {
@@ -32,9 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchField.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-      var input = document.getElementById('searchField');
-      var inputValue = input.value;
-      localStorage.setItem('searchField', inputValue);
       launchWebsite();
     }
   });
