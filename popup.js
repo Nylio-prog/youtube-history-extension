@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     else {
       toggleButton.classList.add("active");
     }
-});
+  });
 
   toggleButton.addEventListener("change", function () {
     chrome.storage.local.get({extension_enabled: 0}, function (result) {

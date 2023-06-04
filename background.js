@@ -12,17 +12,17 @@ chrome.storage.local.get({extension_enabled: 0}, function (result) {
 
 chrome.runtime.onMessage.addListener(function (message) {
   if (message.activateExtension) {
-    extensionActive = true;
+    extension_enabled = true;
     getActiveTabInfo().then(({ tabId, tab }) => {
       newYoutubeVid(tabId, tab);
     });
   } else if (message.deactivateExtension) {
-    extensionActive = false;
+    extension_enabled = false;
   }
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  if (extensionActive && changeInfo.status === "complete") {
+  if (extension_enabled && changeInfo.status === "complete") {
     newYoutubeVid(tabId, tab);
   }
 });
@@ -33,7 +33,6 @@ function getActiveTabInfo() {
       if (tabs.length > 0) {
         const activeTab = tabs[0];
         const tabId = activeTab.id;
-        const tabUrl = activeTab.url;
 
         resolve({ tabId, tab: activeTab });
       }
