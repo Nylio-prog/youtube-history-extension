@@ -62,6 +62,7 @@
             const data = await response.json();
             const captions = await getCaptions(currentVideo);
 
+
             const videoItem = data.items[0];
             const videoData = {
                 id: currentVideo,
@@ -75,59 +76,77 @@
             return videoData;
         
         } catch (error) {
-            throw new Error('Error retrieving video details with id:' + currentVideo + " : " + error);
+            throw new Error('Error retrieving video details with id: ' + currentVideo + " : " + error);
         }
     }
 
-    const storeVideoEventHandler = async () => {
-
-        const statusBtn = document.getElementsByClassName("status-btn")[0];
-        videos = await fetchVideos();
-    
-        const existingVideoIndex = videos.findIndex(video => video.id === currentVideo);
+    const storeVideoAuto = async () => {
+        const existingVideoIndex = await isVideoStored();
         if (existingVideoIndex === -1) {
+            await storeVideo();
+        }
+    }
 
-            vidData = await getVideoData();
+    const storeVideo = async () => {
+        const videos = await fetchVideos();
+        const vidData = await getVideoData();
+        const statusBtn = document.getElementsByClassName("status-btn")[0];
 
-            const newVideo = {
-                id: vidData.id,
-                url: vidData.url,
-                title: vidData.title,
-                channel: vidData.channel,
-                captions: vidData.captions,
-                recentDateWatched: vidData.recentDateWatched
-            };
+        const newVideo = {
+            id: vidData.id,
+            url: vidData.url,
+            title: vidData.title,
+            channel: vidData.channel,
+            captions: vidData.captions,
+            recentDateWatched: vidData.recentDateWatched
+        };
 
-            chrome.storage.local.set({
-            [storage_index]: JSON.stringify([...videos, newVideo].sort((a, b) => a.title - b.title))
-            });
-            statusBtn.style.filter = 'invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%)'; //To make it green
+        chrome.storage.local.set({
+        [storage_index]: JSON.stringify([...videos, newVideo].sort((a, b) => a.title - b.title))
+        });
+        console.log("Stored vid : " + currentVideo);
+        changeStatusGreen(statusBtn);
+    }
 
-        } else {
-            videos.splice(existingVideoIndex, 1);
+    const deleteVideo = async () => {
+        const statusBtn = document.getElementsByClassName("status-btn")[0];
+        const existingVideoIndex = await isVideoStored();
+        const videos = await fetchVideos();
+        videos.splice(existingVideoIndex, 1);
             chrome.storage.local.set({
                 [storage_index]: JSON.stringify(videos)
             });
-            statusBtn.style.filter = 'invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%)'; //To make it red
+        changeStatusRed(statusBtn);
+    }
+
+    const isVideoStored = async () => {
+        const videos = await fetchVideos();
+        return videos.findIndex(video => video.id === currentVideo);//-1 if video not stored, index if found   
+    }
+
+    const storeVideoEventHandler = async () => {
+        
+        const existingVideoIndex = await isVideoStored();
+        if (existingVideoIndex === -1) {
+            storeVideo();
+        } else {
+            deleteVideo();
         }
 
-        
     };
 
-    function changeColorStatus(btn, index){
-        if (index === -1) {
-            btn.style.filter = 'invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%)'; //To make it red
-        }
-        else{
-            btn.style.filter = 'invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%)'; //To make it green
-        }
+    function changeStatusGreen(btn){
+        btn.style.filter = 'invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%)'; //To make it green
     }
+    function changeStatusRed(btn){
+        btn.style.filter = 'invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%)'; //To make it red
+    }
+
 
     const newVideoLoaded = async () => {
         const statusBtnExists = document.getElementsByClassName("status-btn")[0];
 
-        videos = await fetchVideos();
-        const existingVideoIndex = videos.findIndex(video => video.id === currentVideo);
+        const existingVideoIndex = await isVideoStored();
 
         if (!statusBtnExists){
             const statusBtn = document.createElement("img");
@@ -135,17 +154,27 @@
             statusBtn.src =  chrome.runtime.getURL("assets/status.png");
             statusBtn.className = "ytp-button " + "status-btn";
             statusBtn.title = "Click to add to the history";
-            changeColorStatus(statusBtn, existingVideoIndex);
+            if (existingVideoIndex === -1){
+                changeStatusRed(statusBtn);
+            } 
+            else {
+                changeStatusGreen(statusBtn);
+            }
 
             youtubeRightControls = document.getElementsByClassName("ytp-right-controls")[0];
             youtubePlayer = document.getElementsByClassName("video-stream")[0];
-        
             youtubeRightControls.prepend(statusBtn);
             statusBtn.addEventListener("click", storeVideoEventHandler);
         }
         else{
-            changeColorStatus(statusBtnExists, existingVideoIndex);
+            if (existingVideoIndex === -1){
+                changeStatusRed(statusBtnExists);
+            } 
+            else {
+                changeStatusGreen(statusBtnExists);
+            }
         }
+        await storeVideoAuto();
 
     }
 
