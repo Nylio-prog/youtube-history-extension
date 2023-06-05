@@ -1,16 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Youtube History Caption Search</title>
-  <script src="search.js"></script>
-  
+  <link rel="stylesheet" type="text/css" href="style_website.css">
+  <script src="website.js"></script>
 </head>
 <body>
-    <div id="search"> 
-    <input type="text" id="myInput" placeholder="Search for moments">
+  <header>
+    <h1>Video Playback UI</h1>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search keywords">
+      <button onclick="search()">Search</button>
     </div>
-    <div id="videos">
-    <!--iframe style="width:720px; height: 450px;" src="https://www.youtube.com/embed/JzUwvJJNTpA"></iframe-->
+  </header>
+
+  <main>
+    <div id="video-frame">
+      <!-- Embedded YouTube video goes here -->
     </div>
+
+    <div id="progress-bar">
+      <div id="found-moments-indicator"></div>
+    </div>
+
+    <div id="found-moments-count"></div>
+
+    <div id="captions">
+      <button id="hide-show-captions" onclick="toggleCaptions()">Hide/Show Captions</button>
+      <ul id="captions-list">
+        <!-- Caption items dynamically generated here -->
+      </ul>
+    </div>
+
+    <div id="video-results">
+      <div id="sort-by">
+        <button id="sort-by-button" onclick="toggleSortOptions()">Sort by</button>
+        <div id="sort-options">
+          <!-- Sorting options dynamically generated here -->
+        </div>
+      </div>
+      <ul id="video-list">
+        <!-- Video items dynamically generated here -->
+      </ul>
+    </div>
+
+    <div id="filters">
+      <button id="hide-show-filters" onclick="toggleFilters()">Hide/Show Filters</button>
+      <ul id="filter-list">
+        <!-- Filtering items dynamically generated here -->
+      </ul>
+    </div>
+  </main>
 </body>
 </html>
