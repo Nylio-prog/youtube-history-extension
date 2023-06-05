@@ -1,5 +1,4 @@
 (async() => {
-    let youtubeRightControls, youtubePlayer;
     let currentVideo = "";
     let APIKey = "AIzaSyCSohPOQtWVY8ZxzlWG4UOkgtrvqNWsqvo";
     let storage_index = 'history_videos';
@@ -105,7 +104,7 @@
         chrome.storage.local.set({
         [storage_index]: JSON.stringify([...videos, newVideo].sort((a, b) => a.title - b.title))
         });
-        console.log("Stored vid : " + currentVideo);
+        console.log("We stored vid : " + currentVideo);
         changeStatusGreen(statusBtn);
     }
 
@@ -138,15 +137,17 @@
 
     function changeStatusGreen(btn){
         btn.style.filter = 'invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%)'; //To make it green
+        btn.title = "Video stored, click to delete";
+
     }
     function changeStatusRed(btn){
         btn.style.filter = 'invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%)'; //To make it red
+        btn.title = "Video not stored, click to store";
+
     }
 
 
     const newVideoLoaded = async () => {
-        console.log("New vid loaded");
-        console.log(currentVideo);
         const statusBtnExists = document.getElementsByClassName("status-btn")[0];
         
         const existingVideoIndex = await isVideoStored();
@@ -164,9 +165,10 @@
                 changeStatusGreen(statusBtn);
             }
 
-            youtubeRightControls = document.getElementsByClassName("ytp-right-controls")[0];
-            youtubePlayer = document.getElementsByClassName("video-stream")[0];
-            youtubeRightControls.prepend(statusBtn);
+            const youtubeRightControls = document.getElementsByClassName("ytp-right-controls")[0];
+            if (youtubeRightControls){
+                youtubeRightControls.prepend(statusBtn);
+            }
             statusBtn.addEventListener("click", storeVideoEventHandler);
         }
         else{
@@ -177,8 +179,6 @@
                 changeStatusGreen(statusBtnExists);
             }
         }
-        console.log("Extension enabled: ");
-        console.log(extension_enabled);
         if (extension_enabled){
             await storeVideoAuto();
         }
