@@ -1,8 +1,9 @@
-(() => {
+(async() => {
     let youtubeRightControls, youtubePlayer;
     let currentVideo = "";
     let APIKey = "AIzaSyCSohPOQtWVY8ZxzlWG4UOkgtrvqNWsqvo";
     let storage_index = 'history_videos';
+    let extension_enabled;
 
     const fetchVideos = () => {
         return new Promise((resolve) => {
@@ -144,8 +145,10 @@
 
 
     const newVideoLoaded = async () => {
+        console.log("New vid loaded");
+        console.log(currentVideo);
         const statusBtnExists = document.getElementsByClassName("status-btn")[0];
-
+        
         const existingVideoIndex = await isVideoStored();
 
         if (!statusBtnExists){
@@ -174,19 +177,26 @@
                 changeStatusGreen(statusBtnExists);
             }
         }
-        await storeVideoAuto();
+        console.log("Extension enabled: ");
+        console.log(extension_enabled);
+        if (extension_enabled){
+            await storeVideoAuto();
+        }
+
 
     }
 
-    chrome.runtime.onMessage.addListener((obj, sender, response) => {
-        const {type, value, videoId} = obj;
+    chrome.runtime.onMessage.addListener(async (obj, sender, response) => {
+        const {type, videoId, extension_value} = obj;
 
         if (type === "NEW"){
             currentVideo = videoId;
-            newVideoLoaded();
+            extension_enabled = extension_value;
+
+            await newVideoLoaded();
         } 
     })
 
-    newVideoLoaded();
+    await newVideoLoaded();
     
 })();

@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  toggleButton.addEventListener("change", function () {
+  toggleButton.addEventListener("click", function () {
     chrome.storage.local.get({extension_enabled: 0}, function (result) {
       var extension_enabled = result.extension_enabled;
       if (extension_enabled == 0) {
