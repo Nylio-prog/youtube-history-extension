@@ -137,9 +137,13 @@
 
     function changeStatusGreen(btn){
         btn.style.filter = 'invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%)'; //To make it green
+        btn.title = "Video stored, click to delete";
+
     }
     function changeStatusRed(btn){
         btn.style.filter = 'invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%)'; //To make it red
+        btn.title = "Video not stored, click to store";
+
     }
 
 
