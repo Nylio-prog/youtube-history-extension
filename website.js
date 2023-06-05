@@ -1,7 +1,4 @@
 
-
-function search() {
-    
     function display_vids(search_data){
         chrome.storage.local.get(null, function(data) {
             var arr_of_vids = JSON.parse(data.history_videos);
@@ -16,14 +13,14 @@ function search() {
                 }
             }
             var res = Array.from(st);
-            const vid_div = document.getElementById("videos");
+            const vid_div = document.getElementById("video-frame");
             vid_div.innerHTML = "";
             //https://www.youtube.com/watch?v=zz_SjeT_-M4&ab_channel=Naritsa to https://www.youtube.com/embed/zz_SjeT_-M4
             for(let it of res){
                 var src = "https://www.youtube.com/embed/" + it;
                 var iframe = document.createElement('iframe');
-                iframe.style.width = '720px';
-                iframe.style.height = '450px';
+                iframe.style.width = '320px';
+                iframe.style.height = '240px';
                 iframe.src = src;
                 vid_div.appendChild(iframe);
             }
@@ -33,16 +30,14 @@ function search() {
     var storedValue = localStorage.getItem('searchField');
     window.onload = display_vids(storedValue);
     document.addEventListener("DOMContentLoaded", function () {
-        const searchField = document.getElementById("myInput");
-        searchField.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                var input = document.getElementById('myInput');
-                var inputValue = input.value;
-                display_vids(inputValue);
-            }
-        });
+        const searchField = document.getElementById("search-input");
+        const get_button = document.getElementById("get_results");
+        get_button.onclick = function(){
+            var input = document.getElementById('search-input');
+            var inputValue = input.value;
+            display_vids(inputValue);
+        };
     });
-}
 
 function toggleCaptions() {
     // Show/hide captions
