@@ -17,6 +17,8 @@ jobs:
 
       # Install your dependencies
       - run: yarn install
+      # Install additional dependencies
+      - run: yarn add puppeteer mocha -D
 
       - save_cache:
           paths:
