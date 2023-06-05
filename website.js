@@ -6,6 +6,10 @@ var search_word;
         var caps = cap_map.get(id);
         const cap_div = document.getElementById("captions-list");
         cap_div.innerHTML = "";
+        var num_of_caps = document.getElementById("number_of_captions");
+        num_of_caps.innerText = "Number of captions is: " + caps.length.toString();
+        var ma = Math.min(30 * caps.length, 300);
+        cap_div.style.height = ma.toString() + "px";
         var highlited_part = '<mark class="highlight">' + search_word + '</mark>';
         for(let x of caps){
             var par = document.createElement('p');
@@ -84,6 +88,8 @@ var search_word;
 function toggleCaptions() {
     if(flag){
         const cap_div = document.getElementById("captions-list");
+        var num_of_caps = document.getElementById("number_of_captions");
+        num_of_caps.innerText = "";
         cap_div.innerHTML = "";
         flag = false;
     }
