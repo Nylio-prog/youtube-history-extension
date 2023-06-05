@@ -1,19 +1,20 @@
 let extension_enabled;
 
-chrome.storage.local.get({extension_enabled: 0}, function (result) {
-    if (result === 0) {
-        extension_enabled = false;
-    }
-    else {
-        extension_enabled = true;
-    }
+chrome.storage.local.get({ extension_enabled: 0 }, function (result) {
+  if (result.extension_enabled === 0) {
+    extension_enabled = false;
+  } else {
+    extension_enabled = true;
+  }
 });
 
 chrome.runtime.onMessage.addListener(function (message) {
   if (message.activateExtension) {
     extension_enabled = true;
-    getActiveTabInfo().then(({ tabId, status, tab }) => {
-      newYoutubeVid(tabId, status, tab);
+    getTabsInfo().then((tabs) => {
+      tabs.forEach(({ tabId, status, tab }) => {
+        newYoutubeVid(tabId, status, tab);
+      });
     });
   } else if (message.deactivateExtension) {
     extension_enabled = false;
@@ -21,26 +22,30 @@ chrome.runtime.onMessage.addListener(function (message) {
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-    newYoutubeVid(tabId, changeInfo.status, tab);
+  newYoutubeVid(tabId, changeInfo.status, tab);
 });
 
-function getActiveTabInfo() {
+function getTabsInfo() {
   return new Promise((resolve) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      if (tabs.length > 0) {
-        const activeTab = tabs[0];
-        const tabId = activeTab.id;
-
-        chrome.tabs.get(tabId, function (tab) {
-          resolve({ tabId, status: tab.status, tab });
-        });
-      }
+    chrome.tabs.query({}, function (tabs) {
+      const tabsInfo = tabs.map((tab) => {
+        return {
+          tabId: tab.id,
+          status: tab.status,
+          tab: tab
+        };
+      });
+      resolve(tabsInfo);
     });
   });
 }
 
 function newYoutubeVid(tabId, status, tab) {
-  if (status === 'complete' && tab.url && tab.url.includes("youtube.com/watch")) {
+  if (
+    status === "complete" &&
+    tab.url &&
+    tab.url.includes("youtube.com/watch")
+  ) {
     const queryParameters = tab.url.split("?")[1];
     const urlParameters = new URLSearchParams(queryParameters);
 
