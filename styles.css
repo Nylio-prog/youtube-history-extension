@@ -62,3 +62,7 @@
     transform: translateX(26px);
   }
   
+  .highlight {
+    background-color: yellow;
+    font-weight: bold;
+  }
