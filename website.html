@@ -9,7 +9,7 @@
     <h1>Video Playback UI</h1>
     <div class="search-bar">
       <input type="text" id="search-input" placeholder="Search keywords">
-      <button onclick="search()">Search</button>
+      <button id="get_results">Search</button>
     </div>
   </header>
 
@@ -19,15 +19,16 @@
     </div>
 
     <div id="progress-bar">
-      <div id="found-moments-indicator"></div>
+      <div id="found-moments-indicator">
+              </div>
     </div>
 
     <div id="found-moments-count"></div>
 
     <div id="captions">
-      <button id="hide-show-captions" onclick="toggleCaptions()">Hide/Show Captions</button>
+      <button id="hide-show-captions">Hide/Show Captions</button>
       <ul id="captions-list">
-        <!-- Caption items dynamically generated here -->
+        
       </ul>
     </div>
 
