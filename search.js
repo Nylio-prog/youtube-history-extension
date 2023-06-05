@@ -20,8 +20,8 @@ function display_vids(search_data){
         for(let it of res){
             var src = "https://www.youtube.com/embed/" + it;
             var iframe = document.createElement('iframe');
-            iframe.style.width = '720px';
-            iframe.style.height = '450px';
+            iframe.style.width = '350px';
+            iframe.style.height = '240px';
             iframe.src = src;
             vid_div.appendChild(iframe);
         }
