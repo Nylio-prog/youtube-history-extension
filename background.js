@@ -1,8 +1,7 @@
 let extension_enabled;
 
 chrome.storage.local.get({extension_enabled: 0}, function (result) {
-
-    if (result == 0) {
+    if (result === 0) {
         extension_enabled = false;
     }
     else {
@@ -13,8 +12,8 @@ chrome.storage.local.get({extension_enabled: 0}, function (result) {
 chrome.runtime.onMessage.addListener(function (message) {
   if (message.activateExtension) {
     extension_enabled = true;
-    getActiveTabInfo().then(({ tabId, tab }) => {
-      newYoutubeVid(tabId, tab);
+    getActiveTabInfo().then(({ tabId, status, tab }) => {
+      newYoutubeVid(tabId, status, tab);
     });
   } else if (message.deactivateExtension) {
     extension_enabled = false;
@@ -22,9 +21,7 @@ chrome.runtime.onMessage.addListener(function (message) {
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-  if (extension_enabled && changeInfo.status === "complete") {
-    newYoutubeVid(tabId, tab);
-  }
+    newYoutubeVid(tabId, changeInfo.status, tab);
 });
 
 function getActiveTabInfo() {
@@ -34,20 +31,23 @@ function getActiveTabInfo() {
         const activeTab = tabs[0];
         const tabId = activeTab.id;
 
-        resolve({ tabId, tab: activeTab });
+        chrome.tabs.get(tabId, function (tab) {
+          resolve({ tabId, status: tab.status, tab });
+        });
       }
     });
   });
 }
 
-function newYoutubeVid(tabId, tab) {
-  if (tab.url && tab.url.includes("youtube.com/watch")) {
+function newYoutubeVid(tabId, status, tab) {
+  if (status === 'complete' && tab.url && tab.url.includes("youtube.com/watch")) {
     const queryParameters = tab.url.split("?")[1];
     const urlParameters = new URLSearchParams(queryParameters);
 
     chrome.tabs.sendMessage(tabId, {
       type: "NEW",
       videoId: urlParameters.get("v"),
+      extension_value: extension_enabled
     });
   }
 }
