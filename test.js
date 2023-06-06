@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const assert = require('assert');
+const { stat } = require('fs');
 let browser, page;
 
 const puppeteerArgs = [
@@ -13,21 +14,23 @@ describe('Extension', async() => {
     beforeEach(async function () {
         browser = await puppeteer.launch({
             headless: false,
-            slowMo: 50,
             args: puppeteerArgs
         });
         [page] = await browser.pages();
+        await page.waitForTimeout(200); //Waiting page to load
+
         const targets = browser.targets();
+
         const extensionTarget = targets.find(target => target.type() === 'service_worker');
+    
         const partialExtensionUrl = extensionTarget.url() || '';
         const [, , extensionId] = partialExtensionUrl.split('/');
-
+    
         const extensionUrl = `chrome-extension://${extensionId}/popup.html`;
-
+    
         await page.goto(extensionUrl, {waitUntil: ['domcontentloaded', "networkidle2"], timeout: 0});
-
+    
         await page.waitForXPath("/html/head/title");
-        
     });
 
     afterEach(async function() {
@@ -98,6 +101,55 @@ describe('Extension', async() => {
 
         statusBtnTitle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('title'));
         assert.equal(statusBtnTitle, 'Video stored, click to delete');
+
+    }));
+
+    it('Complex status button usage', (async () => {
+        
+        const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
+        var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
+        assert.equal(toggleClass, null);
+
+        const youtubeURL = 'https://www.youtube.com/watch?v=VULO2EL4A3Q&';
+
+        const ytbPage = await browser.newPage();
+        await ytbPage.goto(youtubeURL, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 0 });
+
+        await ytbPage.waitForXPath('//img[@class="ytp-button status-btn"]');
+
+        const [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
+
+        // Check if it's red and has the right title at first
+        var statusBtnStyle = await ytbPage.evaluate(el => el.getAttribute('style'), statusBtnSelector);
+        assert.equal(statusBtnStyle, 'filter: invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%);');
+
+        var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
+        assert.equal(statusBtnTitle, 'Video not stored, click to store');
+
+        await toggleSelector.evaluate(b => b.click());
+
+        toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
+        assert.equal(toggleClass, 'active');
+
+        await ytbPage.waitForTimeout(3000); //Waiting for the video to download
+
+        // Check if it's green and has the right title
+        statusBtnStyle = await ytbPage.evaluate(el => el.getAttribute('style'), statusBtnSelector);
+        assert.equal(statusBtnStyle, 'filter: invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%);');
+
+        statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
+        assert.equal(statusBtnTitle, 'Video stored, click to delete');
+
+        await statusBtnSelector.evaluate(b => b.click()); //Deactivate the extension
+
+        await ytbPage.waitForTimeout(1000); //Waiting for the video to remove
+
+        // Check if it's red since we deleted it
+        var statusBtnStyle = await ytbPage.evaluate( el => el.getAttribute('style'), statusBtnSelector);
+        assert.equal(statusBtnStyle, 'filter: invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%);');
+
+        var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
+        assert.equal(statusBtnTitle, 'Video not stored, click to store');
 
     }));
 
