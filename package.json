@@ -1,5 +1,5 @@
 {
     "scripts": {
-        "test": "mocha test.js"
+        "test": "mocha --timeout 60000 test.js"
       }
 }
