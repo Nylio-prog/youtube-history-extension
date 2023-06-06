@@ -2,6 +2,15 @@ var cap_map = new Map();
 var flag = false;
 var cur_id;
 var search_word;
+
+/*
+const search_button = document.getElementById("search_button").addEventListener("click", search);
+
+function search(){
+
+}*/ //Not working well when we click from the popup since the element is null at that time but we need
+//to write something like that later to avoid inline functions in the html which are not allowed.
+
     function get_caps(id){
         var caps = cap_map.get(id);
         const cap_div = document.getElementById("captions-list");
