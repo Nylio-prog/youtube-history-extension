@@ -6,9 +6,10 @@ const puppeteerArgs = [
     `--disable-extensions-except=${__dirname}`,
     `--load-extension=${__dirname}`,
     '--disable-features=DialMediaRouteProvider',
+    '--mute-audio'
 ];
 
-describe('Extension', async function() {
+describe('Extension', async function() {    
 
     before(async function () {
         browser = await puppeteer.launch({
