@@ -62,11 +62,11 @@
             const data = await response.json();
             const captions = await getCaptions(currentVideo);
 
-
             const videoItem = data.items[0];
             const videoData = {
                 id: currentVideo,
                 url: "https://www.youtube.com/watch?v=" + currentVideo,
+                thumbnails: videoItem.snippet.thumbnails,
                 title: videoItem.snippet.title,
                 channel: videoItem.snippet.channelTitle,
                 captions: captions,
@@ -95,6 +95,7 @@
         const newVideo = {
             id: vidData.id,
             url: vidData.url,
+            thumbnails: vidData.thumbnails,
             title: vidData.title,
             channel: vidData.channel,
             captions: vidData.captions,
