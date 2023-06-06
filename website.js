@@ -2,6 +2,13 @@ var cap_map = new Map();
 var flag = false;
 var cur_id;
 var search_word;
+
+document.getElementsByClassName("search_button").addEventListener("click", search);
+
+function search(){
+    
+}
+
     function get_caps(id){
         var caps = cap_map.get(id);
         const cap_div = document.getElementById("captions-list");
