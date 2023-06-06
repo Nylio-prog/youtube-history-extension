@@ -70,6 +70,7 @@
                 title: videoItem.snippet.title,
                 channel: videoItem.snippet.channelTitle,
                 captions: captions,
+                thumbnail: videoItem.snippet.thumbnails.default.url,
                 recentDateWatched: new Date().toISOString()
             };
 
@@ -98,6 +99,7 @@
             title: vidData.title,
             channel: vidData.channel,
             captions: vidData.captions,
+            thumbnail: vidData.thumbnail,
             recentDateWatched: vidData.recentDateWatched
         };
 

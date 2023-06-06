@@ -2,6 +2,7 @@ var cap_map = new Map();
 var flag = false;
 var cur_id;
 var search_word;
+
     function get_caps(id){
         var caps = cap_map.get(id);
         const cap_div = document.getElementById("captions-list");
@@ -33,7 +34,7 @@ var search_word;
                     var str = it.captions[i];
                     var low_case = str.toLowerCase();
                     if (low_case.includes(search_data)){
-                        st.add(it.id);
+                        st.add(j);
                         var pair = [it.captions[i-1], str];
                         list_of_caps.push(pair);
                     }
@@ -42,16 +43,22 @@ var search_word;
                     cap_map.set(it.id, list_of_caps);
                 }
             }
-            var res = Array.from(st);
-            cur_id = res[0];
-            get_caps(res[0]);
+            var elems = Array.from(st);
+            var thumbs = [];
+            var ids = [];
+            for(let x in elems){
+                //thumbs.push(arr_of_vids[x].thumbnail);
+                ids.push(arr_of_vids[x].id);
+            }
+            cur_id = ids[0];
+            get_caps(ids[0]);
             const vid_div = document.getElementById("video-list");
             const one_vid = document.getElementById("video-frame");
             vid_div.innerHTML = "";
             one_vid.innerHTML = "";
             //https://www.youtube.com/watch?v=zz_SjeT_-M4&ab_channel=Naritsa to https://www.youtube.com/embed/zz_SjeT_-M4
-            if(res.length > 0){
-                var src = "https://www.youtube.com/embed/" + res[0];
+            if(ids.length > 0){
+                var src = "https://www.youtube.com/embed/" + ids[0];
                 var iframe = document.createElement('iframe');
                 iframe.style.width = '320px';
                 iframe.style.height = '240px';
@@ -59,16 +66,23 @@ var search_word;
                 one_vid.appendChild(iframe);
             }
 
-            for(let it of res){
+            for(let it of ids){
                 var src = "https://www.youtube.com/embed/" + it;
                 var iframe = document.createElement('iframe');
                 iframe.style.width = '240px';
                 iframe.style.height = '160px';
                 iframe.src = src;
-                vid_div.appendChild(iframe);
+                one_vid.appendChild(iframe);
             }
         });
     }
+
+    function perform_change(){
+        alert("Clicked.")
+
+    }
+
+
     
     var storedValue = localStorage.getItem('searchField');
     window.onload = display_vids(storedValue);
@@ -91,6 +105,7 @@ function toggleCaptions() {
         var num_of_caps = document.getElementById("number_of_captions");
         num_of_caps.innerText = "";
         cap_div.innerHTML = "";
+        cap_div.style.height = "0px";
         flag = false;
     }
     else{
