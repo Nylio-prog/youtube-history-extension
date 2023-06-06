@@ -8,9 +8,9 @@ const puppeteerArgs = [
     '--disable-features=DialMediaRouteProvider',
 ];
 
-describe('Extension', async() => {
+describe('Extension', async function() {
 
-    beforeEach(async function () {
+    before(async function () {
         browser = await puppeteer.launch({
             headless: false,
             args: puppeteerArgs
@@ -32,27 +32,27 @@ describe('Extension', async() => {
         await page.waitForXPath("/html/head/title");
     });
 
-    afterEach(async function() {
+    after(async function() {
         await browser.close();
       });
 
-    it('Title name', (async () => {
+    it('Title name', async function() {
   
         const titleSelector = await page.$x("/html/head/title");
 
         const title = await page.evaluate(el => el.textContent, titleSelector[0])
         assert.equal(title, 'Youtube History Caption Search');
-    }));
+    });
 
-    it('Toggle switch class name', (async () => {
+    it('Toggle switch class name', async function() {
         const toggleSelector = await page.$x('/html/body/div/label/span');
 
         const toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector[0]);
         assert.equal(toggleClass, 'slider');
 
-    }));
+    });
 
-    it('Toggle switch', (async () => {
+    it('Toggle switch', async function() {
         
         const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
         var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
@@ -63,17 +63,21 @@ describe('Extension', async() => {
         toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
         assert.equal(toggleClass, 'active');
 
-    }));
+    });
 
-    it('Activating status button', async () => {
+    it('Activating deactivating status button', async () => {
+        
         const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
+        await toggleSelector.evaluate(b => b.click());
+
         var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
-        assert.equal(toggleClass, null);
+        assert.equal(toggleClass, '');
       
         const youtubeURL = 'https://www.youtube.com/watch?v=VULO2EL4A3Q&';
       
         const ytbPage = await browser.newPage();
         await ytbPage.goto(youtubeURL, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 0 });
+        await ytbPage.bringToFront();
       
         await ytbPage.waitForSelector('img.ytp-button.status-btn');
       
@@ -87,60 +91,23 @@ describe('Extension', async() => {
         assert.equal(statusBtnTitle, 'Video not stored, click to store');
       
         await toggleSelector.evaluate(b => b.click());
+
+        await ytbPage.bringToFront(); //because we clicked on toggleSelector
       
         toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
         assert.equal(toggleClass, 'active');
       
         await ytbPage.waitForTimeout(3000); // Waiting for the video to download
-      
+
         // Check if it's green and has the right title
         statusBtnStyle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('style'));
         assert.equal(statusBtnStyle, 'filter: invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%);');
       
         statusBtnTitle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('title'));
         assert.equal(statusBtnTitle, 'Video stored, click to delete');
-      
-      });
-      
 
-    it('Activating and deactivating status btn', (async () => {
-        
-        const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
-        var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
-        assert.equal(toggleClass, null);
-
-        const youtubeURL = 'https://www.youtube.com/watch?v=VULO2EL4A3Q&';
-
-        const ytbPage = await browser.newPage();
-        await ytbPage.goto(youtubeURL, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 0 });
-
-        await ytbPage.waitForXPath('//img[@class="ytp-button status-btn"]');
-
-        const [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
-
-        // Check if it's red and has the right title at first
-        var statusBtnStyle = await ytbPage.evaluate(el => el.getAttribute('style'), statusBtnSelector);
-        assert.equal(statusBtnStyle, 'filter: invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%);');
-
-        var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
-        assert.equal(statusBtnTitle, 'Video not stored, click to store');
-
-        await toggleSelector.evaluate(b => b.click());
-
-        toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
-        assert.equal(toggleClass, 'active');
-
-        await ytbPage.waitForTimeout(3000); //Waiting for the video to download
-
-        // Check if it's green and has the right title
-        statusBtnStyle = await ytbPage.evaluate(el => el.getAttribute('style'), statusBtnSelector);
-        assert.equal(statusBtnStyle, 'filter: invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%);');
-
-        statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
-        assert.equal(statusBtnTitle, 'Video stored, click to delete');
-
-        await statusBtnSelector.evaluate(b => b.click()); //Deactivate the extension
-
+        var [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
+        await statusBtnSelector.evaluate(b => b.click()); //Click on status btn to remove vid
         await ytbPage.waitForTimeout(1000); //Waiting for the video to remove
 
         // Check if it's red since we deleted it
@@ -150,13 +117,20 @@ describe('Extension', async() => {
         var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
         assert.equal(statusBtnTitle, 'Video not stored, click to store');
 
-    }));
+        await ytbPage.close();
 
-    it('2 new youtube and then activating', (async () => {
+        await toggleSelector.evaluate(b => b.click());
+
+        var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
+            assert.equal(toggleClass, '');
+
+    });
+
+    it('2 new youtube and then activating', async function() {
         
         const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
         var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
-        assert.equal(toggleClass, null);
+        assert.equal(toggleClass, '');
 
         const youtubeURL1 = 'https://www.youtube.com/watch?v=VULO2EL4A3Q&';
         const youtubeURL2 = 'https://www.youtube.com/watch?v=_W8Aeq3FCzE';
@@ -192,20 +166,28 @@ describe('Extension', async() => {
         statusBtnStyle2 = await ytbPage2.evaluate(el => el.getAttribute('style'), statusBtnSelector2);
         assert.equal(statusBtnStyle2, 'filter: invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%);');
 
-    }));
+        await ytbPage2.close();
+        await ytbPage1.close();
 
-    it('Activate then open a new tab', (async () => {
+        await toggleSelector.evaluate(b => b.click());
+
+        var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
+            assert.equal(toggleClass, '');
+
+    });
+
+    it('Activate then open a new tab', async function() {
         
         const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
         var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
-        assert.equal(toggleClass, null);
+        assert.equal(toggleClass, '');
 
         await toggleSelector.evaluate(b => b.click()); //Activate
 
         toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
         assert.equal(toggleClass, 'active');
 
-        const youtubeURL1 = 'https://www.youtube.com/watch?v=VULO2EL4A3Q&';
+        const youtubeURL1 = 'https://www.youtube.com/watch?v=s7qbW83Pdbc';
         
         const ytbPage1 = await browser.newPage();
         await ytbPage1.goto(youtubeURL1, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 0 });
@@ -218,15 +200,22 @@ describe('Extension', async() => {
         statusBtnStyle1 = await ytbPage1.evaluate(el => el.getAttribute('style'), statusBtnSelector1);
         assert.equal(statusBtnStyle1, 'filter: invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%);');
 
-    }));
+        await ytbPage1.close();
 
-    it('Open a new tab without activating', (async () => {
+        await toggleSelector.evaluate(b => b.click());
+
+        var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
+            assert.equal(toggleClass, '');
+
+    });
+
+    it('Open a new tab without activating', async function() {
         
         const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
         var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
-        assert.equal(toggleClass, null);
+        assert.equal(toggleClass, '');
 
-        const youtubeURL1 = 'https://www.youtube.com/watch?v=VULO2EL4A3Q&';
+        const youtubeURL1 = 'https://www.youtube.com/watch?v=HXL5npG5yGQ';
         
         const ytbPage1 = await browser.newPage();
         await ytbPage1.goto(youtubeURL1, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 0 });
@@ -237,15 +226,19 @@ describe('Extension', async() => {
         var statusBtnStyle1 = await ytbPage1.evaluate(el => el.getAttribute('style'), statusBtnSelector1);
         assert.equal(statusBtnStyle1, 'filter: invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%);');
         
-    }));
+        await ytbPage1.close();
 
-    it('Open a new tab without activating and then activating', (async () => {
+        var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
+            assert.equal(toggleClass, '');
+    });
+
+    it('Open a new tab without activating and then activating', async function() {
         
         const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
         var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
-        assert.equal(toggleClass, null);
+        assert.equal(toggleClass, '');
 
-        const youtubeURL1 = 'https://www.youtube.com/watch?v=VULO2EL4A3Q&';
+        const youtubeURL1 = 'https://www.youtube.com/watch?v=2I3zVgTNTQk';
         
         const ytbPage1 = await browser.newPage();
         await ytbPage1.goto(youtubeURL1, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 0 });
@@ -268,6 +261,12 @@ describe('Extension', async() => {
         statusBtnStyle1 = await ytbPage1.evaluate(el => el.getAttribute('style'), statusBtnSelector1);
         assert.equal(statusBtnStyle1, 'filter: invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%);');
 
-    }));
+        await ytbPage1.close();
+
+        await toggleSelector.evaluate(b => b.click());
+
+        var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
+            assert.equal(toggleClass, '');
+    });
 
 });
