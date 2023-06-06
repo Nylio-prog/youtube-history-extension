@@ -76,7 +76,8 @@
             return videoData;
         
         } catch (error) {
-            throw new Error('Error retrieving video details with id: ' + currentVideo + " : " + error);
+            const statusBtn = document.getElementsByClassName("status-btn")[0];
+            changeStatusGrey(statusBtn);
         }
     }
 
@@ -105,7 +106,6 @@
         chrome.storage.local.set({
         [storage_index]: JSON.stringify([...videos, newVideo].sort((a, b) => a.title - b.title))
         });
-        console.log("We stored vid : " + currentVideo);
         changeStatusGreen(statusBtn);
     }
 
@@ -139,12 +139,14 @@
     function changeStatusGreen(btn){
         btn.style.filter = 'invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%)'; //To make it green
         btn.title = "Video stored, click to delete";
-
     }
     function changeStatusRed(btn){
         btn.style.filter = 'invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%)'; //To make it red
         btn.title = "Video not stored, click to store";
-
+    }
+    function changeStatusGrey(btn){
+        btn.style.filter = 'filter: invert(59%) sepia(4%) saturate(9%) hue-rotate(327deg) brightness(85%) contrast(82%)'; //To make it grey
+        btn.title = "Error while loading video";
     }
 
 
