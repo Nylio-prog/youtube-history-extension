@@ -35,6 +35,7 @@ function search(){
             search_word = search_data;
             var arr_of_vids = JSON.parse(data.history_videos);
             const st = new Set();
+            var ids = [];
             for(var j = 0; j < arr_of_vids.length; j++){
                 var it = arr_of_vids[j];
                 var list_of_caps = [];
@@ -42,24 +43,22 @@ function search(){
                     var str = it.captions[i];
                     var low_case = str.toLowerCase();
                     if (low_case.includes(search_data)){
-                        st.add(j);
                         var pair = [it.captions[i-1], str];
                         list_of_caps.push(pair);
                     }
                 }
                 if(list_of_caps.length != 0){
+                    ids.push(it.id);
                     cap_map.set(it.id, list_of_caps);
                 }
             }
-            var elems = Array.from(st);
-            var thumbs = [];
-            var ids = [];
-            for(let x in elems){
-                //thumbs.push(arr_of_vids[x].thumbnail);
-                ids.push(arr_of_vids[x].id);
+            if(ids.length != 0){
+                cur_id = ids[0];
+                get_caps(ids[0]);
             }
-            cur_id = ids[0];
-            get_caps(ids[0]);
+            else{
+                clean();
+            }
             const vid_div = document.getElementById("video-list");
             const one_vid = document.getElementById("video-frame");
             vid_div.innerHTML = "";
@@ -80,7 +79,7 @@ function search(){
                 iframe.style.width = '240px';
                 iframe.style.height = '160px';
                 iframe.src = src;
-                one_vid.appendChild(iframe);
+                vid_div.appendChild(iframe);
             }
         });
     }
@@ -120,6 +119,14 @@ function toggleCaptions() {
         get_caps(cur_id);
         flag = true;
     }
+}
+
+function clean(){
+    const cap_div = document.getElementById("captions-list");
+        var num_of_caps = document.getElementById("number_of_captions");
+        num_of_caps.innerText = "";
+        cap_div.innerHTML = "";
+        cap_div.style.height = "0px";
 }
 
 function toggleSortOptions() {
