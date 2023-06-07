@@ -15,6 +15,10 @@ function search(){
         var caps = cap_map.get(id);
         const cap_div = document.getElementById("captions-list");
         cap_div.innerHTML = "";
+        var num_of_caps = document.getElementById("number_of_captions");
+        num_of_caps.innerText = "Number of captions is: " + caps.length.toString();
+        var ma = Math.min(30 * caps.length, 300);
+        cap_div.style.height = ma.toString() + "px";
         var highlited_part = '<mark class="highlight">' + search_word + '</mark>';
         for(let x of caps){
             var par = document.createElement('p');
@@ -31,6 +35,7 @@ function search(){
             search_word = search_data;
             var arr_of_vids = JSON.parse(data.history_videos);
             const st = new Set();
+            var ids = [];
             for(var j = 0; j < arr_of_vids.length; j++){
                 var it = arr_of_vids[j];
                 var list_of_caps = [];
@@ -38,25 +43,29 @@ function search(){
                     var str = it.captions[i];
                     var low_case = str.toLowerCase();
                     if (low_case.includes(search_data)){
-                        st.add(it.id);
                         var pair = [it.captions[i-1], str];
                         list_of_caps.push(pair);
                     }
                 }
                 if(list_of_caps.length != 0){
+                    ids.push(it.id);
                     cap_map.set(it.id, list_of_caps);
                 }
             }
-            var res = Array.from(st);
-            cur_id = res[0];
-            get_caps(res[0]);
+            if(ids.length != 0){
+                cur_id = ids[0];
+                get_caps(ids[0]);
+            }
+            else{
+                clean();
+            }
             const vid_div = document.getElementById("video-list");
             const one_vid = document.getElementById("video-frame");
             vid_div.innerHTML = "";
             one_vid.innerHTML = "";
             //https://www.youtube.com/watch?v=zz_SjeT_-M4&ab_channel=Naritsa to https://www.youtube.com/embed/zz_SjeT_-M4
-            if(res.length > 0){
-                var src = "https://www.youtube.com/embed/" + res[0];
+            if(ids.length > 0){
+                var src = "https://www.youtube.com/embed/" + ids[0];
                 var iframe = document.createElement('iframe');
                 iframe.style.width = '320px';
                 iframe.style.height = '240px';
@@ -64,7 +73,7 @@ function search(){
                 one_vid.appendChild(iframe);
             }
 
-            for(let it of res){
+            for(let it of ids){
                 var src = "https://www.youtube.com/embed/" + it;
                 var iframe = document.createElement('iframe');
                 iframe.style.width = '240px';
@@ -74,6 +83,13 @@ function search(){
             }
         });
     }
+
+    function perform_change(){
+        alert("Clicked.")
+
+    }
+
+
     
     var storedValue = localStorage.getItem('searchField');
     window.onload = display_vids(storedValue);
@@ -93,13 +109,24 @@ function search(){
 function toggleCaptions() {
     if(flag){
         const cap_div = document.getElementById("captions-list");
+        var num_of_caps = document.getElementById("number_of_captions");
+        num_of_caps.innerText = "";
         cap_div.innerHTML = "";
+        cap_div.style.height = "0px";
         flag = false;
     }
     else{
         get_caps(cur_id);
         flag = true;
     }
+}
+
+function clean(){
+    const cap_div = document.getElementById("captions-list");
+        var num_of_caps = document.getElementById("number_of_captions");
+        num_of_caps.innerText = "";
+        cap_div.innerHTML = "";
+        cap_div.style.height = "0px";
 }
 
 function toggleSortOptions() {

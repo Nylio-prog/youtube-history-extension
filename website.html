@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="style_website.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
   <script src="website.js"></script>
 </head>
 <body>
@@ -14,22 +14,6 @@
   </header>
 
   <main>
- <!-- Pretty version starts here  -->
- <div class="v2_2">
-  <div class="custom-field">
-    <input id="search-input" placeholder="Type in your request..." type="text"/>
-  </div>
-    <span class="v2_4">YouTube History Caption Search </span>
-    <div class="v4_10"></div>
-    <div class="v4_17"></div>
-    <span class="v4_11">Search for moments</span>
-    <span class="v4_12">Filters</span><span class="v4_14">Results</span>
-    <div class="div_search_button">
-      <button id="search_button">Search</button>
-      <script src="website.js"></script>
-    </div>
-</div>
-<!-- Pretty version ends here  -->
 
     <div id="video-frame">
       <!-- Embedded YouTube video goes here -->
@@ -44,9 +28,10 @@
 
     <div id="captions">
       <button id="hide-show-captions">Hide/Show Captions</button>
-      <ul id="captions-list">
-        
-      </ul>
+    <div id="captions_info">
+      <h2 id="number_of_captions"></h2>
+      <ul id="captions-list" style="overflow-y:scroll; background: rgb(199, 195, 195);">
+    </div>
     </div>
 
     <div id="video-results">
