@@ -64,9 +64,18 @@ describe('Extension', async function() {
         toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
         assert.equal(toggleClass, 'active');
 
+        const extension_enabled = await page.evaluate(() => {
+            return new Promise((resolve) => {
+            chrome.storage.local.get('extension_enabled', (result) => {
+                resolve(result.extension_enabled);
+            });
+            });
+        });
+        assert.equal(extension_enabled, '1');
+
     });
 
-    it('Activating deactivating status button', async () => {
+    it('Activating deactivating status button + storage', async () => {
         
         const [toggleSelector] = await page.$x('//*[@id="toggleButton"]');
         await toggleSelector.evaluate(b => b.click());
@@ -74,38 +83,50 @@ describe('Extension', async function() {
         var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
         assert.equal(toggleClass, '');
       
-        const youtubeURL = 'https://www.youtube.com/watch?v=VULO2EL4A3Q&';
+        const youtubeURL = 'https://www.youtube.com/watch?v=C7OQHIpDlvA';
       
         const ytbPage = await browser.newPage();
         await ytbPage.goto(youtubeURL, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 0 });
         await ytbPage.bringToFront();
       
-        await ytbPage.waitForSelector('img.ytp-button.status-btn');
-      
-        var statusBtnSelector = 'img.ytp-button.status-btn';
+        await ytbPage.waitForXPath('//img[@class="ytp-button status-btn"]');
+        
+        var [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
       
         // Check if it's red and has the right title at first
-        var statusBtnStyle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('style'));
+        var statusBtnStyle = await ytbPage.evaluate(el => el.getAttribute('style'), statusBtnSelector);
         assert.equal(statusBtnStyle, 'filter: invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%);');
       
-        var statusBtnTitle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('title'));
+        var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
         assert.equal(statusBtnTitle, 'Video not stored, click to store');
       
         await toggleSelector.evaluate(b => b.click());
-
-        await ytbPage.bringToFront(); //because we clicked on toggleSelector
       
         toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
         assert.equal(toggleClass, 'active');
       
         await ytbPage.waitForTimeout(3000); // Waiting for the video to download
 
+        var [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
+
         // Check if it's green and has the right title
-        statusBtnStyle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('style'));
+        var statusBtnStyle = await ytbPage.evaluate( el => el.getAttribute('style'), statusBtnSelector);
         assert.equal(statusBtnStyle, 'filter: invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%);');
       
-        statusBtnTitle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('title'));
+        var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
         assert.equal(statusBtnTitle, 'Video stored, click to delete');
+
+        //Checking that it stored well
+        const stored_vid = await page.evaluate(() => {
+            return new Promise((resolve) => {
+            chrome.storage.local.get('history_videos', (result) => {
+                resolve(result.history_videos);
+            });
+            });
+        });
+
+        const testString = '[{"id":"C7OQHIpDlvA","url":"https://www.youtube.com/watch?v=C7OQHIpDlvA","thumbnails":{"default":{"url":"https://i.ytimg.com/vi/C7OQHIpDlvA/default.jpg","width":120,"height":90},"medium":{"url":"https://i.ytimg.com/vi/C7OQHIpDlvA/mqdefault.jpg","width":320,"height":180},"high":{"url":"https://i.ytimg.com/vi/C7OQHIpDlvA/hqdefault.jpg","width":480,"height":360},"standard":{"url":"https://i.ytimg.com/vi/C7OQHIpDlvA/sddefault.jpg","width":640,"height":480},"maxres":{"url":"https://i.ytimg.com/vi/C7OQHIpDlvA/maxresdefault.jpg","width":1280,"height":720}},"title":"The Wait  - 1 Minute Short Film | Award Winning","channel":"Nolt Vutthisak","captions":["00:00","yeah bro we got away to this a pen and","00:02","make is over yeah I\'ll see you","00:06","later in like two months","00:31","[Music]"],"recentDateWatched":"2023-06-07T09:00:05.216Z"}]'.split('"recentDateWatched"')[0];
+        assert.equal(stored_vid.split('"recentDateWatched"')[0], testString);
 
         var [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
         await statusBtnSelector.evaluate(b => b.click()); //Click on status btn to remove vid
@@ -117,6 +138,18 @@ describe('Extension', async function() {
 
         var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
         assert.equal(statusBtnTitle, 'Video not stored, click to store');
+
+        //Checking that it stored well
+        const delete_vid = await page.evaluate(() => {
+            return new Promise((resolve) => {
+            chrome.storage.local.get('history_videos', (result) => {
+                resolve(result.history_videos);
+            });
+            });
+        });
+
+        const emptyArrayString = '[]'; 
+        assert.equal(delete_vid, emptyArrayString);
 
         await ytbPage.close();
 
