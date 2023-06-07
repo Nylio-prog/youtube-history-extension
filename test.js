@@ -89,33 +89,31 @@ describe('Extension', async function() {
         await ytbPage.goto(youtubeURL, { waitUntil: ['domcontentloaded', 'networkidle2'], timeout: 0 });
         await ytbPage.bringToFront();
       
-        await ytbPage.waitForSelector('img.ytp-button.status-btn');
-      
-        var statusBtnSelector = 'img.ytp-button.status-btn';
+        await ytbPage.waitForXPath('//img[@class="ytp-button status-btn"]');
+        
+        var [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
       
         // Check if it's red and has the right title at first
-        var statusBtnStyle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('style'));
+        var statusBtnStyle = await ytbPage.evaluate(el => el.getAttribute('style'), statusBtnSelector);
         assert.equal(statusBtnStyle, 'filter: invert(12%) sepia(78%) saturate(7358%) hue-rotate(2deg) brightness(97%) contrast(116%);');
       
-        var statusBtnTitle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('title'));
+        var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
         assert.equal(statusBtnTitle, 'Video not stored, click to store');
       
         await toggleSelector.evaluate(b => b.click());
-
-        await ytbPage.bringToFront(); //because we clicked on toggleSelector
       
         toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
         assert.equal(toggleClass, 'active');
-
-        await ytbPage.bringToFront(); //because we checked toggleSelector
       
         await ytbPage.waitForTimeout(3000); // Waiting for the video to download
 
+        var [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
+
         // Check if it's green and has the right title
-        statusBtnStyle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('style'));
+        var statusBtnStyle = await ytbPage.evaluate( el => el.getAttribute('style'), statusBtnSelector);
         assert.equal(statusBtnStyle, 'filter: invert(58%) sepia(64%) saturate(2319%) hue-rotate(78deg) brightness(114%) contrast(131%);');
       
-        statusBtnTitle = await ytbPage.$eval(statusBtnSelector, el => el.getAttribute('title'));
+        var statusBtnTitle = await ytbPage.evaluate(el => el.getAttribute('title'), statusBtnSelector);
         assert.equal(statusBtnTitle, 'Video stored, click to delete');
 
         //Checking that it stored well
