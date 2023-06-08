@@ -1,5 +1,8 @@
 {
     "scripts": {
         "test": "mocha --timeout 60000 test.js"
-      }
+    },
+    "dependencies": {
+        "puppeteer": "^20.5.0"
+    }
 }

@@ -1,244 +1,114 @@
-/* Add your custom styles here */
-* {
-    box-sizing: border-box;
-  }
-  body {
-    font-size: 14px;
-  }
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  .custom-field input {
-    border: none;
-    -webkit-appearance: none;
-    -ms-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background: #f2f2f2;
-    padding: 12px;
-    border-radius: 3px;
-    font-size: 14px;
-    width: 458px;
-    height: 61px;
-    background: rgba(217,217,217,1);
-    opacity: 1;
-    position: absolute;
-    top: 206px;
-    left: 423px;
-    overflow: hidden;
-  }
-  .v2_2 {
-    width: 100%;
-    height: 1024px;
-    background: rgba(255,255,255,1);
-    opacity: 1;
-    position: relative;
-    top: 0px;
-    left: 0px;
-    overflow: hidden;
-  }
-  .v2_3 {
-    width: 458px;
-    height: 61px;
-    background: rgba(217,217,217,1);
-    opacity: 1;
-    position: absolute;
-    top: 206px;
-    left: 423px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    overflow: hidden;
-  }
-  .v2_4 {
-    width: 806px;
-    color: rgba(31,46,97,1);
-    position: absolute;
-    top: 39px;
-    left: 40px;
-    font-family: Inter;
-    font-weight: Bold;
-    font-size: 50px;
-    opacity: 1;
-    text-align: left;
-  }
-  .v4_10 {
-    width: 361px;
-    height: 765px;
-    background: rgba(217,217,217,1);
-    opacity: 1;
-    position: absolute;
-    top: 206px;
-    left: 40px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    overflow: hidden;
-  }
-  .v4_17 {
-    width: 635px;
-    height: 682px;
-    background: rgba(217,217,217,1);
-    opacity: 1;
-    position: absolute;
-    top: 289px;
-    left: 423px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    overflow: hidden;
-  }
-  .v4_11 {
-    width: 689px;
-    color: rgba(0,0,0,1);
-    position: absolute;
-    top: 158px;
-    left: 423px;
-    font-family: Inter;
-    font-weight: Semi Bold;
-    font-size: 30px;
-    opacity: 1;
-    text-align: left;
-  }
-  .v4_13 {
-    width: 302px;
-    color: rgba(113,113,113,1);
-    position: absolute;
-    top: 222px;
-    left: 443px;
-    font-family: Inter;
-    font-weight: Regular;
-    font-size: 23px;
-    opacity: 1;
-    text-align: left;
-  }
-  .v4_12 {
-    width: 689px;
-    color: rgba(0,0,0,1);
-    position: absolute;
-    top: 158px;
-    left: 40px;
-    font-family: Inter;
-    font-weight: Semi Bold;
-    font-size: 30px;
-    opacity: 1;
-    text-align: left;
-  }
-  .v4_14 {
-    width: 305px;
-    color: rgba(0,0,0,1);
-    position: absolute;
-    top: 158px;
-    left: 1080px;
-    font-family: Inter;
-    font-weight: Semi Bold;
-    font-size: 30px;
-    opacity: 1;
-    text-align: left;
-  }
-  .div_search_button {
-    width: 159px;
-    height: 61px;
-    background: rgba(217,217,217,1);
-    opacity: 1;
-    position: absolute;
-    top: 206px;
-    left: 899px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    overflow: hidden;
-    border-radius: 3px;
-  }
-  .search_button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    width: 159px;
-    height: 61px;
-    border-radius: 3px;
-  }
-  
-  
-  
-  
-  
-  
-  
-  .search-bar {
-      margin-bottom: 20px;
-    }
-  .search-bar-1 {
-      margin-bottom: 20px;
-      width: 302px;
-      color: rgba(113,113,113,1);
-      position: absolute;
-      top: 222px;
-      left: 443px;
-      font-family: Inter;
-      font-weight: Regular;
-      font-size: 23px;
-      opacity: 1;
-      text-align: left;
-    }
-    #progress-bar {
-      height: 20px;
-      width: 100%;
-      background-color: lightgray;
-      margin-bottom: 10px;
-    }
-    
-    #found-moments-indicator {
-      height: 100%;
-      background-color: green;
-    }
-    
-    #captions {
-      margin-bottom: 10px;
-    }
-    
-    #captions-list {
-      list-style-type: none;
-      padding: 0;
-    }
-    
-    #captions-list li {
-      cursor: pointer;
-    }
-    
-    #video-results {
-      display: flex;
-      margin-bottom: 10px;
-    }
-    
-    #sort-options {
-      display: none;
-    }
-    
-    #video-list {
-      list-style-type: none;
-      padding: 0;
-    }
-    
-    #video-list li {
-      cursor: pointer;
-    }
-    
-    #filters {
-      margin-bottom: 10px;
-    }
-    
-    #filter-list {
-      list-style-type: none;
-      padding: 0;
-    }
-    
+.container {
+  display: flex;
+}
+
+.filter-box {
+  width: 200px;
+  background-color: #f1f1f1;
+  padding: 10px;
+}
+
+.filter-header {    
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.hide-button {
+  background-color:rgb(35, 57, 149);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px; /* Adds round edges */
+}
+
+.filter-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.video-captions-container {
+  display: flex;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  width: 500px;
+}
+
+.search-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 20px; /* Adjust the width as needed */
+  height: 20px; /* Adjust the height as needed */
+}
+
+.search-button img {
+  width: 16px; /* Adjust the width as needed */
+  height: 16px; /* Adjust the height as needed */
+}
+
+.video-container {
+  margin-right: 10px;
+}
+
+.video-container iframe {
+  margin-right: 10px;
+}
+
+.captions-box {
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.captions {
+  flex: 1;
+  max-width: 300px; /* Adjust the maximum width as needed */
+}
+
+.captions h2 {
+  margin-top: 0;
+}
+
+.captions-list {
+  list-style-type: none;
+  padding: 0;
+  max-height: 200px; /* Adjust the maximum height as needed */
+  overflow: auto; /* Enable scrolling if the captions exceed the maximum height */
+}
+
+.hide-captions-button {
+  background-color: rgb(35, 57, 149);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px; /* Adds round edges */
+  top: 10px;
+  right: 10px;
+}
+
+.video-list {
+  width: 200px;
+  padding: 10px;
+}
