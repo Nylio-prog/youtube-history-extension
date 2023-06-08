@@ -23,32 +23,50 @@
     </div>
     
     <div class="search-box">
-      <h1>Search</h1>
+      <h2>Search for moments</h2>
       <div class="search-bar">
-        <input type="text" placeholder="Search for moments">
+        <input type="text" id="search-input" placeholder="Search in captions">
         <button class="search-button"><img src="magnifying-glass.png"></button>
       </div>
       
       <div class="video-captions-container">
         <div class="video-container">
-          <iframe src="https://www.youtube.com/embed/{video_id}" width="560" height="315" frameborder="0" allowfullscreen></iframe>
-        </div>
+          <div class="video-frame">
+            <!-- Embedded YouTube video goes here -->
+          </div>        
+      </div>
       
+
         <div class="captions-box">
-          <ul class="captions-list">
-            <!-- Captions retrieved in JavaScript will be dynamically added here -->
-          </ul>
+          <div class="captions-container">
+            <ul class="captions-list">
+              <!-- Captions retrieved in JavaScript will be dynamically added here -->
+            </ul>
+          </div>
+          <p id="number-of-captions" class="number-of-captions"></p>
           <button class="hide-captions-button">Hide</button>
         </div>
       </div>
     </div>
     
     
-    <div class="video-list">
-      <h2>Video List</h2>
-      <ul>
-        <!-- List of videos that match the searched captions will be dynamically added here -->
-      </ul>
+    <div class="results-container">
+      <div class="dropdown">
+        <div class="dropdown-header">
+          <h2>Results</h2>
+          <button class="dropdown-button">Sort By</button>
+        </div>
+        <div class="dropdown-content">
+          <a href="#">Choice 1</a>
+          <a href="#">Choice 2</a>
+          <a href="#">Choice 3</a>
+        </div>
+      </div>
+      <div class="video-list">
+        <ul>
+          <!-- List of videos that match the searched captions will be dynamically added here -->
+        </ul>
+      </div>
     </div>
   </div>
 </body>

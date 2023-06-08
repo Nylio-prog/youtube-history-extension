@@ -6,6 +6,7 @@
   width: 200px;
   background-color: #f1f1f1;
   padding: 10px;
+  border: 1px solid #ccc; /* Add a lightly visible border */
 }
 
 .filter-header {    
@@ -37,29 +38,34 @@
 }
 
 .search-bar {
+  position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  width: 840px;
+  height: 30px;
+  margin-bottom: 15px; /* Add a margin-bottom of 15 pixels */
 }
+
+.search-bar input[type="text"] {
+  padding-right: 35px; /* Add space for the button on the right */
+  width: 100%; /* Fill the remaining width */
+  height: 100%;
+}
+
 
 .video-captions-container {
   display: flex;
 }
 
-.search-bar input {
-  flex: 1;
-  padding: 5px;
-  border: 1px solid #ccc;
-  width: 500px;
-}
-
 .search-button {
+  position: absolute;
+  top: 50%;
+  right: 5px; /* Adjust the margin on the right as needed */
+  transform: translateY(-50%);
+  padding: 0;
   background: none;
   border: none;
-  padding: 0;
   cursor: pointer;
-  width: 20px; /* Adjust the width as needed */
-  height: 20px; /* Adjust the height as needed */
 }
 
 .search-button img {
@@ -79,6 +85,21 @@
   background-color: #f1f1f1;
   padding: 10px;
   border-radius: 5px;
+  position: relative; /* Add relative positioning */
+}
+
+.captions-container {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.number-of-captions {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+  position: absolute; /* Add absolute positioning */
+  bottom: -15px;
+  left: 10px;
 }
 
 .captions {
@@ -92,7 +113,7 @@
 
 .captions-list {
   list-style-type: none;
-  padding: 0;
+  padding: 20px;
   max-height: 200px; /* Adjust the maximum height as needed */
   overflow: auto; /* Enable scrolling if the captions exceed the maximum height */
 }
@@ -104,11 +125,86 @@
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 5px; /* Adds round edges */
+  position: absolute; /* Add absolute positioning */
   top: 10px;
   right: 10px;
 }
 
-.video-list {
-  width: 200px;
-  padding: 10px;
+.results-container {
+  margin-bottom: 15px; /* Add a margin at the bottom */
 }
+
+.results-header {
+  display: flex;
+  align-items: center;
+}
+
+.results-header h2 {
+  margin: 0;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between; /* Align items to the start and end */
+  align-items: center; /* Vertically center the items */
+}
+
+.dropdown-button {
+  padding: 5px 10px;
+  background-color: rgb(35, 57, 149);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.video-list {
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin-top: 100px; /* Add a top margin of 100px */
+  border-radius: 5px;
+  max-width: 260px; /* Set the maximum width of the video list box */
+  max-height: 480px; /* Set the maximum height of the video list box */
+  overflow: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
+}
+
+.video-list h2 {
+  margin-top: 0;
+}
+
+.video-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.video-list li {
+  margin-bottom: 10px;
+}
+
