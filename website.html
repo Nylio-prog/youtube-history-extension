@@ -1,57 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" type="text/css" href="style_website.css">
   <script src="website.js"></script>
 </head>
 <body>
   <header>
-    <h1>Video Playback UI</h1>
-    <div class="search-bar">
-      <input type="text" id="search-input" placeholder="Search keywords">
-      <button id="get_results">Search</button>
-    </div>
+    <h1>Youtube History Caption Search</h1>
   </header>
-
-  <main>
-
-    <div id="video-frame">
-      <!-- Embedded YouTube video goes here -->
+  <div class="container">
+    <div class="filter-box">
+      <div class="filter-header">
+        <h2>Filters</h2>
+        <button class="hide-button">Hide</button>
+      </div>
+      <ul class="filter-list">
+        <li>Filter 1</li>
+        <li>Filter 2</li>
+        <li>Filter 3</li>
+        <!-- Add more filter elements as needed -->
+      </ul>
     </div>
+    
+    <div class="search-box">
+      <h2>Search for moments</h2>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search in captions">
+        <button class="search-button"><img src="magnifying-glass.png"></button>
+      </div>
+      
+      <div class="video-captions-container">
+        <div class="video-container">
+          <div class="video-frame">
+            <!-- Embedded YouTube video goes here -->
+          </div>        
+      </div>
+      
 
-    <div id="progress-bar">
-      <div id="found-moments-indicator">
-              </div>
-    </div>
-
-    <div id="found-moments-count"></div>
-
-    <div id="captions">
-      <button id="hide-show-captions">Hide/Show Captions</button>
-    <div id="captions_info">
-      <h2 id="number_of_captions"></h2>
-      <ul id="captions-list" style="overflow-y:scroll; background: rgb(199, 195, 195);">
-    </div>
-    </div>
-
-    <div id="video-results">
-      <div id="sort-by">
-        <button id="sort-by-button" onclick="toggleSortOptions()">Sort by</button>
-        <div id="sort-options">
-          <!-- Sorting options dynamically generated here -->
+        <div class="captions-box">
+          <div class="captions-container">
+            <ul class="captions-list">
+              <!-- Captions retrieved in JavaScript will be dynamically added here -->
+            </ul>
+          </div>
+          <p id="number-of-captions" class="number-of-captions"></p>
+          <button class="hide-captions-button">Hide</button>
         </div>
       </div>
-      <ul id="video-list">
-        <!-- Video items dynamically generated here -->
-      </ul>
     </div>
-
-    <div id="filters">
-      <button id="hide-show-filters" onclick="toggleFilters()">Hide/Show Filters</button>
-      <ul id="filter-list">
-        <!-- Filtering items dynamically generated here -->
-      </ul>
+    
+    
+    <div class="results-container">
+      <div class="dropdown">
+        <div class="dropdown-header">
+          <h2>Results</h2>
+          <button class="dropdown-button">Sort By</button>
+        </div>
+        <div class="dropdown-content">
+          <a href="#">Choice 1</a>
+          <a href="#">Choice 2</a>
+          <a href="#">Choice 3</a>
+        </div>
+      </div>
+      <div class="video-list">
+        <ul>
+          <!-- List of videos that match the searched captions will be dynamically added here -->
+        </ul>
+      </div>
     </div>
-  </main>
+  </div>
 </body>
 </html>
