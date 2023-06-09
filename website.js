@@ -4,9 +4,7 @@ var cur_id;
 var search_word;
 
 function get_captions(id){
-    console.log(id);
     var caps = cap_map.get(id);
-    console.log(caps);
     const cap_div = document.getElementsByClassName("captions-list")[0];
     cap_div.innerHTML = "";
     var num_of_captions = document.getElementById("number-of-captions");
@@ -126,6 +124,30 @@ function perform_change(){
     alert("Clicked.")
 
 }
+
+function sortVideos(sortBy) {
+    var vid_div = document.getElementsByClassName("video-list")[0];
+    var videos = Array.from(vid_div.getElementsByClassName("video-container"));
+    
+    if (sortBy === "Name") {
+      videos.sort(function(a, b) {
+        var titleA = a.getElementsByClassName("video-title")[0].innerText.toLowerCase();
+        var titleB = b.getElementsByClassName("video-title")[0].innerText.toLowerCase();
+        return titleA.localeCompare(titleB);
+      });
+    } else if (sortBy === "Clip count") {
+      videos.sort(function(a, b) {
+        var countA = parseInt(a.getElementsByClassName("video-list-num-captions")[0].innerText);
+        var countB = parseInt(b.getElementsByClassName("video-list-num-captions")[0].innerText);
+        return countB - countA;
+      });
+    }
+  
+    // Reattach sorted videos to the video list
+    videos.forEach(function(video) {
+      vid_div.appendChild(video);
+    });
+  }
    
 
 function toggleCaptions() {
@@ -151,10 +173,6 @@ function clean(){
         cap_div.style.height = "0px";
 }
 
-function toggleSortOptions() {
-    // Show/hide sort options
-}
-
 function toggleFilters() {
     // Show/hide filters
 }
@@ -165,6 +183,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const get_button = document.getElementsByClassName("search-button")[0];
     const hide_show_cap = document.getElementsByClassName("hide-captions-button")[0];
     const search_input = document.getElementById("search-input");
+    var dropdownContent = document.querySelector('.dropdown-content');
+
+    dropdownContent.addEventListener('click', function(e) {
+        var sortBy = e.target.text;  
+        sortVideos(sortBy);
+    });
 
     get_button.onclick = function () {
         var inputValue = search_input.value;
