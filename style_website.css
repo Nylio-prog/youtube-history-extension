@@ -1,11 +1,11 @@
 @font-face {
-  font-family: 'San Francisco Bold';
-  src: url(fonts/SF-Pro-Display-Bold.otf) format("opentype");
+  font-family: 'Mallory Bold';
+  src: url(fonts/Mallory\ Bold.ttf) format("truetype");
 }
 
 @font-face {
-  font-family: 'San Francisco';
-  src: url(fonts/SFUIText-Regular.otf) format("opentype");
+  font-family: 'Mallory';
+  src: url(fonts/Mallory\ Medium.ttf) format("truetype");
 }
 
 .container {
@@ -13,20 +13,20 @@
 }
 
 h1{
-  font-family: 'San Francisco Bold';
+  font-family: 'Mallory Bold';
   color: rgba(2,42,91,255);
   font-size: 26px;
  }
 
  
 h2{
-  font-family: 'San Francisco Bold';
+  font-family: 'Mallory Bold';
   color: rgba(2,42,91,255);
   font-size: 20px;
  }
 
  #search-for-moments{
-  font-family: 'San Francisco Bold';
+  font-family: 'Mallory Bold';
   color: 	rgb(78, 78, 78);
   font-size: 20px;
  }
@@ -50,6 +50,7 @@ h2{
 .hide-button {
   background-color:rgba(2,42,91,255);
   font-size: 16px;
+  font-family: 'Mallory';
   color: white;
   border: none;
   padding: 3px 3px;
@@ -73,7 +74,7 @@ h2{
   position: relative;
   display: flex;
   align-items: center;
-  width: 840px;
+  width: 854px;
   height: 40px;
   margin-bottom: 15px; /* Add a margin-bottom of 15 pixels */
   border-radius: 5px;
@@ -140,7 +141,7 @@ input{
 .video-list-num-captions{
   font-size: 18px;
   color: #333;
-  font-family: 'San Francisco Bold';
+  font-family: 'Mallory Bold';
   color: rgb(223,223,8);
   text-align: right;
 }
@@ -153,14 +154,14 @@ input{
   color: #333;
   position: absolute;
   bottom: -15px;
-  font-family: 'San Francisco Bold';
+  font-family: 'Mallory Bold';
   color: rgb(223,223,8);
   left: 0;
   right: 0;
   text-align: center; /* Center the text within the element */
 }
 .caption {
-  font-family: 'San Francisco Bold';
+  font-family: 'Mallory Bold';
 }
 
 .caption:hover {
@@ -184,7 +185,8 @@ input{
 .captions-list {
   list-style-type: none;
   padding: 20px;
-  max-height: 400px; /* Adjust the maximum height as needed */
+  height: 400px;
+  /*min-width: 275px; */
   margin-bottom: 25px;
   overflow: auto; /* Enable scrolling if the captions exceed the maximum height */
 }
@@ -192,6 +194,7 @@ input{
 .hide-captions-button {
   background-color: rgba(2,42,91,255);
   font-size: 16px;
+  font-family: 'Mallory';
   color: white;
   border: none;
   padding: 3px 3px;
@@ -294,7 +297,7 @@ input{
 }
 
 .video-title{
-  font-family: 'San Francisco Bold';
+  font-family: 'Mallory Bold';
   font-size: 14px;
 }
 
@@ -306,7 +309,7 @@ input{
 .video-info {
   width: 240px;
   text-align: left;
-  font-family: 'San Francisco';
+  font-family: 'Mallory';
 }
 
 .video-info p {

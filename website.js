@@ -57,7 +57,7 @@ function display_vids(search_data){
             get_captions(ids[0]);
         }
         else{
-            clean();
+            no_captions_found();
         }
         const vid_div = document.getElementsByClassName("video-list")[0];
         vid_div.innerHTML = '';
@@ -120,11 +120,6 @@ function display_vids(search_data){
     });
 }
 
-function perform_change(){
-    alert("Clicked.")
-
-}
-
 function sortVideos(sortBy) {
     var vid_div = document.getElementsByClassName("video-list")[0];
     var videos = Array.from(vid_div.getElementsByClassName("video-container"));
@@ -162,21 +157,29 @@ function toggleCaptions() {
         var num_of_captions = document.getElementById("number-of-captions");
         num_of_captions.innerText = "";
         cap_div.innerHTML = "";
-        cap_div.style.height = "0px";
+        const iframe = document.querySelector('iframe');;
+        iframe.style.width = '1066px';
+        iframe.style.height = '600px';
+        const hide_btn = document.getElementsByClassName("hide-captions-button")[0];
+        hide_btn.innerHTML= "Show";
         flag = false;
     }
     else{
+        const iframe = document.querySelector('iframe');;
+        iframe.style.width = '854px';
+        iframe.style.height = '480px';
         get_captions(cur_id);
+        const hide_btn = document.getElementsByClassName("hide-captions-button")[0];
+        hide_btn.innerHTML= "Hide";
         flag = true;
     }
 }
 
-function clean(){
-    const cap_div = document.getElementById("captions-list");
-        var num_of_caps = document.getElementById("number-of-captions");
-        num_of_caps.innerText = "";
-        cap_div.innerHTML = "";
-        cap_div.style.height = "0px";
+function no_captions_found(){
+    const cap_div = document.getElementsByClassName("captions-list")[0];
+    var num_of_caps = document.getElementById("number-of-captions");
+    num_of_caps.innerText = "No captions found";
+    cap_div.innerHTML = "";
 }
 
 function toggleFilters() {
