@@ -113,7 +113,7 @@ h2{
 }
 
 .number-of-captions {
-  margin-top: 10px;
+  margin-top: 15px;
   margin-left: auto;
   margin-right: auto; /* Add auto margin for horizontal centering */
   font-size: 20px;
@@ -146,7 +146,8 @@ h2{
 .captions-list {
   list-style-type: none;
   padding: 20px;
-  max-height: 200px; /* Adjust the maximum height as needed */
+  max-height: 400px; /* Adjust the maximum height as needed */
+  margin-bottom: 25px;
   overflow: auto; /* Enable scrolling if the captions exceed the maximum height */
 }
 

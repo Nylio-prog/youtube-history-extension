@@ -9,8 +9,6 @@ function get_captions(id){
     cap_div.innerHTML = "";
     var num_of_captions = document.getElementById("number-of-captions");
     num_of_captions.innerText = caps.length.toString() + " clips found";
-    var ma = Math.min(30 * caps.length, 300);
-    cap_div.style.height = ma.toString() + "px";
     for(let x of caps){
         var caption = document.createElement('p');
         caption.classList.add("caption");
