@@ -141,7 +141,13 @@ function sortVideos(sortBy) {
         var countB = parseInt(b.getElementsByClassName("video-list-num-captions")[0].innerText);
         return countB - countA;
       });
-    }
+    } else if (sortBy === "Date") {
+        videos.sort(function(a, b) {
+          var dateA = a.getElementsByClassName("watched-date")[0].innerText.split(": ")[1];
+          var dateB = b.getElementsByClassName("watched-date")[0].innerText.split(": ")[1];
+          return new Date(dateB) - new Date(dateA);
+    });
+}
   
     // Reattach sorted videos to the video list
     videos.forEach(function(video) {
