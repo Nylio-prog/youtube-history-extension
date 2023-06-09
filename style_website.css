@@ -3,6 +3,11 @@
   src: url(fonts/SF-Pro-Display-Bold.otf) format("opentype");
 }
 
+@font-face {
+  font-family: 'San Francisco';
+  src: url(fonts/SFUIText-Regular.otf) format("opentype");
+}
+
 .container {
   display: flex;
 }
@@ -20,10 +25,17 @@ h2{
   font-size: 20px;
  }
 
+ #search-for-moments{
+  font-family: 'San Francisco Bold';
+  color: 	rgb(78, 78, 78);
+  font-size: 20px;
+ }
+
 .filter-box {
   width: 200px;
   background-color: #f1f1f1;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   border: 1px solid #ccc; /* Add a lightly visible border */
   margin-top: 30px;
 }
@@ -61,14 +73,23 @@ h2{
   display: flex;
   align-items: center;
   width: 840px;
-  height: 30px;
+  height: 40px;
   margin-bottom: 15px; /* Add a margin-bottom of 15 pixels */
+  border-radius: 5px;
+  border: 3px solid #d6d6d6; /* Set a slight gray border */
 }
 
 .search-bar input[type="text"] {
   padding-right: 35px; /* Add space for the button on the right */
   width: 100%; /* Fill the remaining width */
   height: 100%;
+  border: none; /* Remove the default input border */
+  border-radius: 5px; /* Match the search bar's border radius */
+  outline: none; /* Remove the outline when focused */
+}
+
+input{
+  text-indent: 10px;
 }
 
 
@@ -79,7 +100,7 @@ h2{
 .search-button {
   position: absolute;
   top: 50%;
-  right: 5px; /* Adjust the margin on the right as needed */
+  right: 10px; /* Adjust the margin on the right as needed */
   transform: translateY(-50%);
   padding: 0;
   background: none;
@@ -93,11 +114,9 @@ h2{
 }
 
 .video-container {
-  margin-right: 10px;
-}
-
-.video-container iframe {
-  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .captions-box {
@@ -112,6 +131,19 @@ h2{
   overflow-y: auto;
 }
 
+.highlight {
+  color: rgb(223,223,8);
+}
+
+
+.video-list-num-captions{
+  font-size: 18px;
+  color: #333;
+  font-family: 'San Francisco Bold';
+  color: rgb(223,223,8);
+  text-align: right;
+}
+
 .number-of-captions {
   margin-top: 15px;
   margin-left: auto;
@@ -121,13 +153,18 @@ h2{
   position: absolute;
   bottom: -15px;
   font-family: 'San Francisco Bold';
-  color: yellow;
+  color: rgb(223,223,8);
   left: 0;
   right: 0;
   text-align: center; /* Center the text within the element */
 }
 .caption {
   font-family: 'San Francisco Bold';
+}
+
+.caption:hover {
+  background-color: rgb(179, 179, 179);
+  border-radius: 3px;
 }
 
 .caption .first-word {
@@ -195,10 +232,10 @@ h2{
 .video-list {
   background-color: #f1f1f1;
   padding: 10px;
-  margin-top: 100px; /* Add a top margin of 100px */
+  margin-top: 30px; /* Add a top margin of 100px */
   border-radius: 5px;
   max-width: 260px; /* Set the maximum width of the video list box */
-  max-height: 480px; /* Set the maximum height of the video list box */
+  max-height: 600px; /* Set the maximum height of the video list box */
   overflow: auto; /* Enable vertical scrolling if the content exceeds the maximum height */
 }
 
@@ -214,5 +251,26 @@ h2{
 
 .video-list li {
   margin-bottom: 10px;
+}
+
+.video-title{
+  font-family: 'San Francisco Bold';
+  font-size: 14px;
+}
+
+.video-box {  
+  width: 240px;
+  height: 160px;
+}
+
+.video-info {
+  width: 240px;
+  text-align: left;
+  font-family: 'San Francisco';
+}
+
+.video-info p {
+  margin-top: 2px;
+  margin-bottom: 4px; /* Adjust the value to control the spacing between paragraphs */
 }
 
