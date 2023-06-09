@@ -9,14 +9,12 @@ function get_captions(id){
     cap_div.innerHTML = "";
     var num_of_captions = document.getElementById("number-of-captions");
     num_of_captions.innerText = caps.length.toString() + " clips found";
-    var ma = Math.min(30 * caps.length, 300);
-    cap_div.style.height = ma.toString() + "px";
-    var highlited_part = '<mark class="highlight">' + search_word + '</mark>';
     for(let x of caps){
-        var par = document.createElement('p');
+        var caption = document.createElement('p');
+        caption.classList.add("caption");
         var sub_str = x[1].toLowerCase().split(search_word);
-        par.innerHTML = x[0] + " " + sub_str[0] + highlited_part + sub_str[1];
-        cap_div.appendChild(par);
+        caption.innerHTML = '<span class="first-word">' + x[0] + '</span> ' + sub_str[0] + search_word + sub_str[1];
+        cap_div.appendChild(caption);
     }
 }
 
@@ -119,10 +117,22 @@ window.onload = display_vids(storedValue);
 document.addEventListener("DOMContentLoaded", function () {
     const get_button = document.getElementsByClassName("search-button")[0];
     const hide_show_cap = document.getElementsByClassName("hide-captions-button")[0];
-    get_button.onclick = function(){
-        var input = document.getElementById('search-input');
-        var inputValue = input.value;
+    const search_input = document.getElementById("search-input");
+
+    get_button.onclick = function () {
+        var inputValue = search_input.value;
         display_vids(inputValue);
+    };
+
+    search_input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            var inputValue = search_input.value;
+            display_vids(inputValue);
+        }
+    });
+
+    hide_show_cap.onclick = function () {
+        toggleCaptions();
     };
     hide_show_cap.onclick = function(){
         toggleCaptions();

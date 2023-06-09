@@ -1,12 +1,31 @@
+@font-face {
+  font-family: 'San Francisco Bold';
+  src: url(fonts/SF-Pro-Display-Bold.otf) format("opentype");
+}
+
 .container {
   display: flex;
 }
+
+h1{
+  font-family: 'San Francisco Bold';
+  color: rgba(2,42,91,255);
+  font-size: 26px;
+ }
+
+ 
+h2{
+  font-family: 'San Francisco Bold';
+  color: rgba(2,42,91,255);
+  font-size: 20px;
+ }
 
 .filter-box {
   width: 200px;
   background-color: #f1f1f1;
   padding: 10px;
   border: 1px solid #ccc; /* Add a lightly visible border */
+  margin-top: 30px;
 }
 
 .filter-header {    
@@ -17,7 +36,7 @@
 }
 
 .hide-button {
-  background-color:rgb(35, 57, 149);
+  background-color:rgba(2,42,91,255);
   color: white;
   border: none;
   padding: 5px 10px;
@@ -94,12 +113,25 @@
 }
 
 .number-of-captions {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 15px;
+  margin-left: auto;
+  margin-right: auto; /* Add auto margin for horizontal centering */
+  font-size: 20px;
   color: #333;
-  position: absolute; /* Add absolute positioning */
+  position: absolute;
   bottom: -15px;
-  left: 10px;
+  font-family: 'San Francisco Bold';
+  color: yellow;
+  left: 0;
+  right: 0;
+  text-align: center; /* Center the text within the element */
+}
+.caption {
+  font-family: 'San Francisco Bold';
+}
+
+.caption .first-word {
+  color: blue;
 }
 
 .captions {
@@ -114,12 +146,13 @@
 .captions-list {
   list-style-type: none;
   padding: 20px;
-  max-height: 200px; /* Adjust the maximum height as needed */
+  max-height: 400px; /* Adjust the maximum height as needed */
+  margin-bottom: 25px;
   overflow: auto; /* Enable scrolling if the captions exceed the maximum height */
 }
 
 .hide-captions-button {
-  background-color: rgb(35, 57, 149);
+  background-color: rgba(2,42,91,255);
   color: white;
   border: none;
   padding: 5px 10px;
@@ -131,57 +164,32 @@
 }
 
 .results-container {
-  margin-bottom: 15px; /* Add a margin at the bottom */
+  position: relative;
+  margin-top: 30px;
 }
 
 .results-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 10px;
 }
 
 .results-header h2 {
   margin: 0;
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-header {
-  display: flex;
-  justify-content: space-between; /* Align items to the start and end */
-  align-items: center; /* Vertically center the items */
-}
-
 .dropdown-button {
-  padding: 5px 10px;
-  background-color: rgb(35, 57, 149);
+  background-color: rgba(2,42,91,255);
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 5px 10px;
   cursor: pointer;
-  
+  border-radius: 5px;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 120px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  display: block;
-  padding: 8px 16px;
-  text-decoration: none;
-  color: #333;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
+.video-list {
+  padding: 10px;
 }
 
 .video-list {
