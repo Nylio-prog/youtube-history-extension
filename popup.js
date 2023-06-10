@@ -35,15 +35,19 @@ document.addEventListener("DOMContentLoaded", function () {
       var input = document.getElementById('searchField');
       var inputValue = input.value;
       localStorage.setItem('searchField', inputValue);
-      launchWebsite();
+      launchVideoPlayback();
     }
   });
 
   manageButton.addEventListener("click", function () {
-    launchWebsite();
+    launchManageHistory();
   });
 
-  function launchWebsite() {
-    chrome.tabs.create({ url: "website.html" });
+  function launchVideoPlayback() {
+    chrome.tabs.create({ url: "video_playback.html" });
+  }
+
+  function launchManageHistory() {
+    chrome.tabs.create({ url: "manage_history.html" });
   }
 });
