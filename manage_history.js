@@ -1,4 +1,4 @@
-function display_vids(){
+function display_vids(query){
     chrome.storage.local.get(null, function(data) {
         var arr_of_vids = JSON.parse(data.history_videos);
         var ids = [];
@@ -7,10 +7,13 @@ function display_vids(){
         var dates = [];
         for(var j = 0; j < arr_of_vids.length; j++){
             var it = arr_of_vids[j];
-            ids.push(it.id);
-            titles.push(it.title);
-            channels.push(it.channel);
-            dates.push(it.recentDateWatched.split('T')[0]);      
+            var low_case_title = it.title.toLowerCase();
+            if (low_case_title.includes(query.toLowerCase())){
+                ids.push(it.id);
+                titles.push(it.title);
+                channels.push(it.channel);
+                dates.push(it.recentDateWatched.split('T')[0]); 
+            }
         }
         const vid_div = document.getElementsByClassName("video-grid")[0];
         vid_div.innerHTML = '';
@@ -22,6 +25,14 @@ function display_vids(){
           
             var videoBox = document.createElement('div');
             videoBox.classList.add('video-box');
+            videoBox.style.position = 'relative'; // Add this line to set position relative
+
+            var closeButton = document.createElement('div');
+            closeButton.classList.add('close-button');
+            closeButton.innerText = 'X';
+            videoBox.appendChild(closeButton);
+
+            closeButton.addEventListener('click', createCloseButtonHandler(container, arr_of_vids, ids[i], query));
           
             var iframe = document.createElement('iframe');
             iframe.style.width = '240px';
@@ -57,6 +68,17 @@ function display_vids(){
     });
 }
 
+function createCloseButtonHandler(container, arr_of_vids, id, query) {
+    return function() {
+        container.remove(); 
+        arr_of_vids = arr_of_vids.filter(function(video) {
+            return video.id !== id;
+        });
+        chrome.storage.local.set({['history_videos']: JSON.stringify(arr_of_vids) });
+        display_vids(query);
+    };
+};
+
 function sortVideos(sortBy) {
     var vid_div = document.getElementsByClassName("video-grid")[0];
     var videos = Array.from(vid_div.getElementsByClassName("video-container"));
@@ -88,46 +110,11 @@ function sortVideos(sortBy) {
   }
    
 
-function toggleCaptions() {
-    if(flag){
-        const cap_div = document.getElementsByClassName("captions-list")[0];
-        var num_of_captions = document.getElementById("number-of-captions");
-        num_of_captions.innerText = "";
-        cap_div.innerHTML = "";
-        const iframe = document.querySelector('iframe');;
-        iframe.style.width = '1066px';
-        iframe.style.height = '600px';
-        const hide_btn = document.getElementsByClassName("hide-captions-button")[0];
-        hide_btn.innerHTML= "Show";
-        flag = false;
-    } 
-    else{
-        const iframe = document.querySelector('iframe');;
-        iframe.style.width = '854px';
-        iframe.style.height = '480px';
-        get_captions(cur_id);
-        const hide_btn = document.getElementsByClassName("hide-captions-button")[0];
-        hide_btn.innerHTML= "Hide";
-        flag = true;
-    }
-}
-
-function no_captions_found(){
-    const cap_div = document.getElementsByClassName("captions-list")[0];
-    var num_of_caps = document.getElementById("number-of-captions");
-    num_of_caps.innerText = "No captions found";
-    cap_div.innerHTML = "";
-}
-
-function toggleFilters() {
-    // Show/hide filters
-}
 
 var storedValue = localStorage.getItem('searchField');
-window.onload = display_vids(storedValue);
+window.onload = display_vids('');
 document.addEventListener("DOMContentLoaded", function () {
     const get_button = document.getElementsByClassName("search-button")[0];
-    const hide_show_cap = document.getElementsByClassName("hide-captions-button")[0];
     const search_input = document.getElementById("search-input");
     var dropdownContent = document.querySelector('.dropdown-content');
 

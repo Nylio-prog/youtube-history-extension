@@ -61,6 +61,12 @@ h1{
   padding: 0;
 }
 
+.search-results-container{
+  grid-column: 2 / 3;
+  grid-row: 1 / 1;
+  display: flex;
+}
+
 #search-for-moments{
   font-family: 'Mallory Bold';
   color: 	rgb(78, 78, 78);
@@ -79,6 +85,7 @@ h1{
   align-items: flex-start;
   padding: 10px;
   grid-area: 1 / 2 / span 1 / span 1;
+  height: 130px;
 }
 
 .search-bar {
@@ -94,11 +101,11 @@ h1{
 
 .search-bar input[type="text"] {
   padding-right: 35px; /* Add space for the button on the right */
-  width: 100%; /* Fill the remaining width */
-  height: 100%;
   border: none; /* Remove the default input border */
   border-radius: 5px; /* Match the search bar's border radius */
   outline: none; /* Remove the outline when focused */
+  width: 854px;
+  height: 40px;
 }
 
 
@@ -129,6 +136,8 @@ input{
   align-items: center;
   justify-content: space-between;
   padding: 10px;
+  margin-top: 30px;
+  margin-left: 50px;
 }
 
 .results-header h2 {
@@ -150,6 +159,7 @@ input{
 .dropdown {
   position: relative;
   display: inline-block;
+  margin-left: 50px;
 }
 
 .dropdown-content {
@@ -188,7 +198,6 @@ input{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: subgrid;
-  background-color: #f1f1f1;
   padding: 10px;
   border-radius: 5px;
   overflow: auto;
@@ -227,5 +236,22 @@ input{
 .video-info p {
   margin-top: 2px;
   margin-bottom: 4px; /* Adjust the value to control the spacing between paragraphs */
+}
+
+
+.close-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(2,42,91,255);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 30px;
 }
 
