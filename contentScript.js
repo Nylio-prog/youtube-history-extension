@@ -196,7 +196,6 @@
             await storeVideoAuto();
         }
 
-
     }
 
     chrome.runtime.onMessage.addListener(async (obj, sender, response) => {
