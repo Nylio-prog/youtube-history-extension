@@ -38,6 +38,8 @@ function display_vids(query){
             iframe.style.width = '240px';
             iframe.style.height = '160px';
             iframe.src = src;
+            iframe.style.borderRadius = '8px';
+
             videoBox.appendChild(iframe);
           
             container.appendChild(videoBox);
