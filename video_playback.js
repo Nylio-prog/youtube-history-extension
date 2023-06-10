@@ -15,7 +15,18 @@ function get_captions(id){
         var sub_str = x[1].toLowerCase().split(search_word);
         caption.innerHTML = '<span class="first-word">' + x[0] + '</span> ' + sub_str[0] + '<span class="highlight">' + search_word + '</span>' + sub_str[1];
         cap_div.appendChild(caption);
+        caption.addEventListener('click', function(){
+            updateTimeStamp(x[0]);
+        });
     }
+}
+
+function updateTimeStamp(time) {
+    const min = time.split(':')[0];
+    const sec = time.split(':')[1];
+    const totalSeconds = parseInt(min) * 60 + parseInt(sec);
+    const main_vid = document.getElementById('main_vid');
+    main_vid.src = main_vid.src.split('?')[0] += '?start=' + totalSeconds + "&autoplay=1"; //In case we already added a start
 }
 
 function display_vids(search_data){
@@ -70,6 +81,8 @@ function display_vids(search_data){
             iframe.style.width = '854px';
             iframe.style.height = '480px';
             iframe.src = src;
+            iframe.id = 'main_vid'; // Set an ID for the iframe element
+
             one_vid.appendChild(iframe);
         }
 
