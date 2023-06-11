@@ -15,7 +15,18 @@ function get_captions(id){
         var sub_str = x[1].toLowerCase().split(search_word);
         caption.innerHTML = '<span class="first-word">' + x[0] + '</span> ' + sub_str[0] + '<span class="highlight">' + search_word + '</span>' + sub_str[1];
         cap_div.appendChild(caption);
+        caption.addEventListener('click', function(){
+            updateTimeStamp(x[0]);
+        });
     }
+}
+
+function updateTimeStamp(time) {
+    const min = time.split(':')[0];
+    const sec = time.split(':')[1];
+    const totalSeconds = parseInt(min) * 60 + parseInt(sec);
+    const main_vid = document.getElementById('main_vid');
+    main_vid.src = main_vid.src.split('?')[0] += '?start=' + totalSeconds + "&autoplay=1"; //In case we already added a start
 }
 
 function display_vids(search_data){
@@ -30,6 +41,7 @@ function display_vids(search_data){
         var channels = [];
         var dates = [];
         var number_of_captions = [];
+        var durations = []
         for(var j = 0; j < arr_of_vids.length; j++){
             var it = arr_of_vids[j];
             var list_of_caps = [];
@@ -49,7 +61,9 @@ function display_vids(search_data){
                 channels.push(it.channel);
                 dates.push(it.recentDateWatched.split('T')[0]);
                 number_of_captions.push(counter_of_caps);
+                durations.push(it.duration);
                 cap_map.set(it.id, list_of_caps);
+                
             }
         }
         if(ids.length != 0){
@@ -70,7 +84,11 @@ function display_vids(search_data){
             iframe.style.width = '854px';
             iframe.style.height = '480px';
             iframe.src = src;
+            iframe.id = 'main_vid'; // Set an ID for the iframe element
+
             one_vid.appendChild(iframe);
+            one_vid.appendChild(addVideoDurationBar(ids[0], durations[0]));
+           
         }
 
         for (var i = 1; i < ids.length; i += 1) {
@@ -121,6 +139,49 @@ function display_vids(search_data){
           
     });
 }
+
+function getCaptionsTimeStamps(id){
+    var caps = cap_map.get(id);
+    var list_of_timestamps = [];
+    for(let x of caps){
+        list_of_timestamps.push(x[0]);
+    }
+    return list_of_timestamps;
+}
+
+function getTotalSeconds(time){
+    const min = time.split(':')[0];
+    const sec = time.split(':')[1];
+    return parseInt(min) * 60 + parseInt(sec);
+}
+
+function addVideoDurationBar(id, duration) {
+    const durationBar = document.createElement('div');
+    durationBar.classList.add('video-duration-bar');
+
+    const timestamps = getCaptionsTimeStamps(id);
+
+    // Iterate through the captions array and create circles at the corresponding moments
+    for (let i = 0; i < timestamps.length; i++) {
+      
+      const timestamp = timestamps[i];
+      const totalSeconds = getTotalSeconds(timestamp);
+      const circle = document.createElement('div');
+      circle.style.left = `${(totalSeconds / duration) * 100}%`;
+      circle.classList.add('circle-ring');
+      circle.title = "Go to " + timestamp;
+  
+      // Add a click event listener to each circle
+      circle.addEventListener('click', () => {
+        updateTimeStamp(timestamp);
+      });
+  
+      // Append the circle to the duration bar
+      durationBar.appendChild(circle);
+    }
+
+    return durationBar;
+  }
 
 function sortVideos(sortBy) {
     var vid_div = document.getElementsByClassName("video-list")[0];

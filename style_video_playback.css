@@ -256,7 +256,10 @@ input{
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #c9c9c9}
+.dropdown-content a:hover {
+  background-color: rgba(2,42,91,255);
+  color: white;
+}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
@@ -317,3 +320,21 @@ input{
   margin-bottom: 4px; /* Adjust the value to control the spacing between paragraphs */
 }
 
+.video-duration-bar {
+  background-color: rgb(188, 188, 188);
+  margin-top: 10px;
+  width: 854px; /* Remove the quotes around the width and height values */
+  height: 10px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.circle-ring {
+  width: 18px; /* Increase the width of the circles */
+  height: 18px; /* Increase the height of the circles */
+  position: absolute;
+  top: -3px;
+  border: 2px solid rgba(2, 42, 91, 255);
+  border-radius: 50%;
+  box-sizing: border-box;
+}

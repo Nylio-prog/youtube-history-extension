@@ -54,6 +54,16 @@
         return captions;
     } 
 
+    function iso8601ToSeconds(duration) {
+        const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+      
+        const hours = (parseInt(match[1]) || 0);
+        const minutes = (parseInt(match[2]) || 0);
+        const seconds = (parseInt(match[3]) || 0);
+      
+        return hours * 3600 + minutes * 60 + seconds;
+      }
+
       // Function to retrieve video details using the YouTube API
     const getVideoData = async () => {
         try {
@@ -66,7 +76,7 @@
             const videoData = {
                 id: currentVideo,
                 url: "https://www.youtube.com/watch?v=" + currentVideo,
-                thumbnails: videoItem.snippet.thumbnails,
+                duration: iso8601ToSeconds(videoItem.contentDetails.duration),
                 title: videoItem.snippet.title,
                 channel: videoItem.snippet.channelTitle,
                 captions: captions,
@@ -96,7 +106,7 @@
         const newVideo = {
             id: vidData.id,
             url: vidData.url,
-            thumbnails: vidData.thumbnails,
+            duration: vidData.duration,
             title: vidData.title,
             channel: vidData.channel,
             captions: vidData.captions,
@@ -185,7 +195,6 @@
         if (extension_enabled){
             await storeVideoAuto();
         }
-
 
     }
 
