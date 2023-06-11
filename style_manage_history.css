@@ -180,7 +180,10 @@ input{
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #c9c9c9}
+.dropdown-content a:hover {
+  background-color: rgba(2,42,91,255);
+  color: white;
+}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {

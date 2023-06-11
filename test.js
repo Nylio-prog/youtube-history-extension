@@ -125,7 +125,7 @@ describe('Extension', async function() {
             });
         });
 
-        const testString = '"[{"id":"C7OQHIpDlvA","url":"https://www.youtube.com/watch?v=C7OQHIpDlvA","duration":60,"title":"The Wait  - 1 Minute Short Film | Award Winning","channel":"Morphine","captions":["00:00","yeah bro we got away to this a pen and","00:02","make is over yeah I\'ll see you","00:06","later in like two months","00:31","[Music]"],"recentDateWatched":"2023-06-10T18:24:49.816Z"}]"'.split('"recentDateWatched"')[0];
+        const testString = '[{"id":"C7OQHIpDlvA","url":"https://www.youtube.com/watch?v=C7OQHIpDlvA","duration":60,"title":"The Wait  - 1 Minute Short Film | Award Winning","channel":"Morphine","captions":["00:00","yeah bro we got away to this a pen and","00:02","make is over yeah I\'ll see you","00:06","later in like two months","00:31","[Music]"],"recentDateWatched":"2023-06-10T18:24:49.816Z"}]"'.split('"recentDateWatched"')[0];
         assert.equal(stored_vid.split('"recentDateWatched"')[0], testString);
 
         var [statusBtnSelector] = await ytbPage.$x('//img[@class="ytp-button status-btn"]');
