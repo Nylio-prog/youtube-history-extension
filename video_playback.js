@@ -251,6 +251,7 @@ function toggleFilters() {
 
 var storedValue = localStorage.getItem('searchField');
 window.onload = display_vids(storedValue);
+document.title = "Video playback";
 document.addEventListener("DOMContentLoaded", function () {
     const get_button = document.getElementsByClassName("search-button")[0];
     const hide_show_cap = document.getElementsByClassName("hide-captions-button")[0];

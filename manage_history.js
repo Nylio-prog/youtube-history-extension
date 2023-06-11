@@ -115,6 +115,7 @@ function sortVideos(sortBy) {
 
 var storedValue = localStorage.getItem('searchField');
 window.onload = display_vids('');
+document.title = "Manage videos";
 document.addEventListener("DOMContentLoaded", function () {
     const get_button = document.getElementsByClassName("search-button")[0];
     const search_input = document.getElementById("search-input");
