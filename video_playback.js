@@ -41,7 +41,7 @@ function display_vids(search_data){
         var channels = [];
         var dates = [];
         var number_of_captions = [];
-        var durations = []
+        var durations = [];
         for(var j = 0; j < arr_of_vids.length; j++){
             var it = arr_of_vids[j];
             var list_of_caps = [];
@@ -84,7 +84,7 @@ function display_vids(search_data){
             iframe.style.width = '854px';
             iframe.style.height = '480px';
             iframe.src = src;
-            iframe.id = 'main_vid'; // Set an ID for the iframe element
+            iframe.id = 'main_vid';
 
             one_vid.appendChild(iframe);
             one_vid.appendChild(addVideoDurationBar(ids[0], durations[0]));
@@ -134,9 +134,7 @@ function display_vids(search_data){
           
             container.appendChild(videoInfo);
             vid_div.appendChild(container);
-          }
-          
-          
+          } 
     });
 }
 
@@ -251,6 +249,7 @@ function toggleFilters() {
 
 var storedValue = localStorage.getItem('searchField');
 window.onload = display_vids(storedValue);
+document.title = "Video playback";
 document.addEventListener("DOMContentLoaded", function () {
     const get_button = document.getElementsByClassName("search-button")[0];
     const hide_show_cap = document.getElementsByClassName("hide-captions-button")[0];
