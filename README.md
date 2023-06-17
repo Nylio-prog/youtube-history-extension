@@ -5,4 +5,4 @@ To make it run on chrome :
 -Open extensions on chrome
 -Developper node
 -Load unpacked
--Choose the repo where every files are in
+-Choose the repo where you cloned the github
