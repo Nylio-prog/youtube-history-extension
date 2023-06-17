@@ -37,6 +37,8 @@ describe('Extension', async function() {
         await browser.close();
       });
 
+      
+
     it('Title name', async function() {
   
         const titleSelector = await page.$x("/html/head/title");
@@ -300,7 +302,40 @@ describe('Extension', async function() {
         await toggleSelector.evaluate(b => b.click());
 
         var toggleClass = await page.evaluate(el => el.getAttribute('class'), toggleSelector);
-            assert.equal(toggleClass, '');
+        assert.equal(toggleClass, '');
+    });
+
+    it('Check number of videos matching query "hi"', async function() {
+        await page.type('#searchField', 'hi');
+        await page.keyboard.press('Enter');
+        const currentPage = await browser.pages().then(allPages => allPages[1]); //Get the new page
+
+        const [videoListElement] = await currentPage.$x('//*[@class="video-list"]');
+        const childrenCount = await currentPage.evaluate(element => element.children.length, videoListElement);
+
+        assert.equal(childrenCount, 2);
+    });
+
+    it('Check number of captions matching query "hi"', async function() {
+        const currentPage = await browser.pages().then(allPages => allPages[1]); 
+        const [numberOfCaptionsElement] = await currentPage.$x('//*[@class="number-of-captions"]');
+        const numberOfCaptionsCount = await currentPage.evaluate(element => element.textContent, numberOfCaptionsElement);
+
+        assert.equal(numberOfCaptionsCount, "13 clips found");
+        
+        await currentPage.close();
+    });
+
+    it('Check number of videos in management', async function() {
+        await page.click('#manageButton');
+        const currentPage = await browser.pages().then(allPages => allPages[1]); 
+        await currentPage.waitForXPath('//*[@class="grid-item video-grid"]');
+
+        const [numberOfVideosElement] = await currentPage.$x('//*[@class="grid-item video-grid"]');
+        const numberOfVideosCount = await currentPage.evaluate(element => element.children.length, numberOfVideosElement);
+
+        assert.equal(numberOfVideosCount, 3);
+
     });
 
 });
