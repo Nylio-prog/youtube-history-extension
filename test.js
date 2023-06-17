@@ -322,6 +322,15 @@ describe('Extension', async function() {
         const numberOfCaptionsCount = await currentPage.evaluate(element => element.textContent, numberOfCaptionsElement);
 
         assert.equal(numberOfCaptionsCount, "13 clips found");
+    });
+
+    it('Check number of captions when hiding captions', async function() {
+        const currentPage = await browser.pages().then(allPages => allPages[1]); 
+        await currentPage.click('.hide-captions-button');
+        const [numberOfCaptionsElement] = await currentPage.$x('//*[@class="number-of-captions"]');
+        const numberOfCaptionsCount = await currentPage.evaluate(element => element.textContent, numberOfCaptionsElement);
+
+        assert.equal(numberOfCaptionsCount, '');
         
         await currentPage.close();
     });
