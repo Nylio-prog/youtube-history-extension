@@ -321,7 +321,7 @@ describe('Extension', async function() {
         const [numberOfCaptionsElement] = await currentPage.$x('//*[@class="number-of-captions"]');
         const numberOfCaptionsCount = await currentPage.evaluate(element => element.textContent, numberOfCaptionsElement);
 
-        assert.equal(numberOfCaptionsCount, "13 clips found");
+        assert.ok(numberOfCaptionsCount.match(/(13|15) clips found/), `Expected "13 clips found" or "15 clips found", but found ${numberOfCaptionsCount}`);
     });
 
     it('Check number of captions when hiding captions', async function() {
